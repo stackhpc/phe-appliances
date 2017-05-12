@@ -21,8 +21,8 @@ SlurmdPort=6818
 AuthType=auth/munge
 #JobCredentialPrivateKey=
 #JobCredentialPublicCertificate=
-StateSaveLocation=/tmp
-SlurmdSpoolDir=/tmp/slurmd
+StateSaveLocation=/var/spool/slurm
+SlurmdSpoolDir=/var/spool/slurm
 SwitchType=switch/none
 MpiDefault=none
 SlurmctldPidFile=/var/run/slurmctld.pid
@@ -96,6 +96,6 @@ SlurmdLogFile=/var/log/slurm.log
 SlurmctldLogFile=/var/log/slurmctld.log
 AccountingStorageType=accounting_storage/filetxt
 Epilog=/etc/slurm/slurm.epilog.clean
-NodeName={{alaska_name}}-compute-[0-{{alaska_nodecount-1}}] Sockets=2 CoresPerSocket=8 ThreadsPerCore=2 State=UNKNOWN
+NodeName={{alaska_name}}-compute-[0-{{alaska_nodecount-1}}] Sockets={{hostvars[groups['compute']|first]['ansible_processor_count']}} CoresPerSocket={{hostvars[groups['compute']|first]['ansible_processor_cores']}} ThreadsPerCore={{hostvars[groups['compute']|first]['ansible_processor_threads_per_core']}} State=UNKNOWN
 PartitionName=compute Nodes={{alaska_name}}-compute-[0-{{alaska_nodecount-1}}] Default=YES MaxTime=24:00:00 State=UP
 ReturnToService=1

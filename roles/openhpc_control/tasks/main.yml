@@ -4,3 +4,6 @@
     name: "@ohpc-slurm-server"
     state: installed
 
+- name: Select the SLURM service to control
+  set_fact:
+    slurm_service: slurmctld

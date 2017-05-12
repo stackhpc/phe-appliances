@@ -1,3 +1,6 @@
 ---
-- name: Restart SLURM
-  service: name=slurm state=restarted
+- name: Restart SLURM service
+  service:
+    name: "{{slurm_service}}"
+    state: restarted
+  
