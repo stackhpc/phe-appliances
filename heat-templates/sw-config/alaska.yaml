@@ -1,0 +1,24 @@
+---
+heat_template_version: 2015-10-15
+
+description: >
+  Heat template containing a default multipart software configuration.
+
+resources:
+  alaska_ceph_setup:
+    type: alaska-ceph-setup.yaml
+
+  alaska_ilab_mtu:
+    type: alaska-ilab-mtu.yaml
+
+  instance_config:
+    type: OS::Heat::MultipartMime
+    properties:
+      parts:
+        - config: { get_resource: alaska_ceph_setup }
+        - config: { get_resource: alaska_ilab_mtu }
+
+outputs:
+  OS::stack_id:
+    description: The software configuration resource
+    value: { get_resource: instance_config }

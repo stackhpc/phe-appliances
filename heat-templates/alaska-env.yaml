@@ -1,0 +1,5 @@
+---
+resource_registry:
+  Alaska::InstanceConfig: sw-config/alaska.yaml
+  Alaska::IlabPort: alaska-ilab.yaml
+

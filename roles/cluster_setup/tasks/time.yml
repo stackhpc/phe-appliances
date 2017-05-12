@@ -1,0 +1,27 @@
+---
+- name: Set system timezone
+  timezone:
+    name: Europe/London
+
+- name: Ensure NTP packages are installed
+  yum:
+    name: ntp
+    state: present
+
+- name: Apply Site NTP configuration
+  copy:
+    src: ntp.conf
+    dest: /etc/ntp.conf
+    mode: 0644
+    owner: root
+    group: root
+  notify:
+    - Restart NTP
+
+- name: Ensure NTP is enabled
+  service:
+    name: ntpd
+    enabled: yes
+  notify:
+    - Restart NTP
+

@@ -1,0 +1,17 @@
+{% for output in cluster_stack.stack.outputs %}
+{% if output.output_key == "control_instances" %}
+
+[control]
+{% for node in output.output_value %}
+{{node.name}} ansible_host={{ node.ip }}
+{% endfor %}
+{% endif %}
+{% if output.output_key == "compute_instances" %}
+
+[compute]
+{% for node in output.output_value %}
+{{node.name}} ansible_host={{ node.ip }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+

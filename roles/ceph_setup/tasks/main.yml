@@ -1,0 +1,41 @@
+---
+- name: Ensure Ceph package signing key is present
+  rpm_key: 
+    key: https://download.ceph.com/keys/release.asc
+    state: present
+
+- name: Ensure Ceph repo package is installed
+  yum:
+    name: https://download.ceph.com/rpm/el7/noarch/ceph-release-1-1.el7.noarch.rpm
+    state: present
+
+- name: Ensure Ceph client packages are installed
+  yum:
+    name: ceph
+    state: latest
+
+- name: Write SoftIron Ceph configuration file
+  copy:
+    src: softiron-ceph.conf
+    dest: /etc/ceph/ceph.conf
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Write Ceph client key
+  template: 
+    src: ceph.client.keyring.j2
+    dest: /etc/ceph/ceph.client.{{ceph_client}}.keyring
+    mode: 0600
+    owner: root
+    group: root
+
+- name: Write Ceph client secret
+  lineinfile:
+    create: yes
+    state: present
+    path: /etc/ceph/ceph.client.{{ceph_client}}.secret
+    mode: 0600
+    owner: root
+    group: root
+    line: "{{ceph_secret}}"

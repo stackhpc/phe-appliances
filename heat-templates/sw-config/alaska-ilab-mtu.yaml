@@ -1,0 +1,29 @@
+---
+heat_template_version: 2015-10-15
+
+description: >
+  Heat template containing a single software configuration to add 
+  config required for dropping mtu for accessing external networks
+  through ILab.
+
+resources:
+  alaska_ilab_mtu:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      group: ungrouped
+      config: |
+        #!/bin/bash
+        # NB we depend here on a default route having been defined.
+        # NB we depend on the installed distribution having ip-utils.
+        # Also we are expecting output from ip route of the form:
+        # 8.8.8.8 via 10.60.255.1 dev em3.60  src 10.60.210.1 
+        #    cache 
+        route_data=$(ip route get 8.8.8.8)
+        route_tmp=${route_data##* dev }
+        route_dev=${route_tmp%% src *}
+        ip link set $route_dev mtu 1400
+
+outputs:
+  OS::stack_id:
+    description: The software configuration resource
+    value: { get_resource: alaska_ilab_mtu }

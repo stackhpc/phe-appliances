@@ -1,0 +1,18 @@
+---
+- hosts: control
+  remote_user: centos
+  become: yes
+  roles:
+    - role: openhpc_control
+
+- hosts: compute
+  remote_user: centos
+  become: yes
+  roles:
+    - role: openhpc_compute
+
+- hosts: all
+  remote_user: centos
+  become: yes
+  roles:
+    - role: openhpc_slurm

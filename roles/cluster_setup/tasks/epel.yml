@@ -1,0 +1,5 @@
+---
+- name: Ensure EPEL is present
+  yum:
+    name: epel-release-7
+    state: present

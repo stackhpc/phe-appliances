@@ -1,0 +1,22 @@
+---
+# This playbook uses the Ansible OpenStack modules to create a cluster
+# using a number of baremetal compute node instances, and configure it
+# for a SLURM partition
+- hosts: openstack
+
+  roles:
+    - role: cluster_stack
+      cluster_name: "(( alaska_name }}"
+      cluster_environment: [ "{{ playbook_dir }}/heat-templates/alaska-env.yaml" ]
+      cluster_template: "{{ playbook_dir }}/heat-templates/alaska-cluster.yaml"
+      cluster_params:
+        name_prefix: "{{ alaska_name }}"
+        flavor: baremetal-0
+        image: CentOS7-OpenHPC
+        key_name: ilab_sclt100
+        networks:
+          - network: ilab
+            subnet: ilab
+        num_control: 1
+        num_compute: "{{ alaska_nodecount }}"
+      cluster_inventory: "{{ playbook_dir }}/openhpc_cluster"

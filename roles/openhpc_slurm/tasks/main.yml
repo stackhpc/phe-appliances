@@ -1,0 +1,18 @@
+---
+- name: Ensure SLURM services are enabled
+  service:
+    name: slurm
+    enabled: yes
+  notify:
+    - Restart SLURM
+
+- name: Apply customised SLURM configuration
+  template:
+    src: slurm.conf.j2
+    dest: /etc/slurm/slurm.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: 
+    - Restart SLURM
+

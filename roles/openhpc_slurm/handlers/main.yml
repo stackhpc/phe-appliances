@@ -1,0 +1,3 @@
+---
+- name: Restart SLURM
+  service: name=slurm state=restarted

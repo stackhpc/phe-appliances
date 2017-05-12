@@ -1,0 +1,21 @@
+---
+heat_template_version: 2015-10-15
+
+description: >
+  Heat template containing a single software configuration to add 
+  config required for accessing the SoftIron Ceph cluster on startup.
+
+resources:
+  alaska_ceph_setup:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      group: ungrouped
+      config: |
+        #!/bin/bash
+        # Add a route to the SoftIron Ceph network
+        route add -net 10.4.0.0/16 gw 10.60.253.255
+
+outputs:
+  OS::stack_id:
+    description: The software configuration resource
+    value: { get_resource: alaska_ceph_setup }

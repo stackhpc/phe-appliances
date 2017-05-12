@@ -1,0 +1,35 @@
+---
+# This playbook applies site config for Ceph support,
+# in particular CephFS home directories
+- hosts: all
+  remote_user: centos
+  become: yes
+  roles:
+    - role: cluster_setup
+    - role: ceph_setup
+      ceph_client: alaska
+      ceph_secret: "{{ alaska_ceph_key }}"
+    - role: ceph_homedir
+      homedir_client: alaska
+      homedir_path: "{{ alaska_homedir }}"
+      homedir_server: "{{ alaska_softiron }}:6789"
+
+# Create users, including creating their CephFS home dirs
+# if required.  Generate an RSA public key and configure as 
+# an OpenStack-aware login node.
+- hosts: control
+  remote_user: centos
+  become: yes
+  roles:
+    - role: user_setup
+      users: "{{ alaska_users }}"
+      homedir: "{{ alaska_homedir }}"
+
+- hosts: compute
+  remote_user: centos
+  become: yes
+  roles:
+    - role: user_propagate
+      users: "{{ alaska_users }}"
+      homedir: "{{ alaska_homedir }}"
+

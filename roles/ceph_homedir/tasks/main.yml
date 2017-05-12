@@ -1,0 +1,14 @@
+---
+- name: Ensure the home directory mountpoint exists
+  file:
+    path: "{{ homedir_path }}"
+    state: directory
+
+- name: Mount the home directory from the Ceph cluster
+  mount:
+    path: "{{ homedir_path }}"
+    src: "{{ homedir_server }}:/"
+    fstype: ceph
+    state: mounted
+    opts: "name={{homedir_client}},secretfile=/etc/ceph/ceph.client.{{homedir_client}}.secret"
+    boot: yes
