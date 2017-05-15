@@ -15,6 +15,13 @@ resources:
         # Add a route to the SoftIron Ceph network
         route add -net 10.4.0.0/16 gw 10.60.253.255
 
+        cat > /etc/sysconfig/network-scripts/route-em1 << EOF
+        # 10.4.0.0/16 via 10.60.253.255 dev em1
+        ADDRESS0=10.4.0.0
+        NETMASK0=255.255.0.0
+        GATEWAY0=10.60.253.255
+        EOF
+
 outputs:
   OS::stack_id:
     description: The software configuration resource

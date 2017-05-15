@@ -23,6 +23,9 @@ resources:
         route_dev=${route_tmp%% src *}
         ip link set $route_dev mtu 1400
 
+        # Make the change persistent across network reloads and reboots
+        echo "MTU=\"1400\"" >> /etc/sysconfig/network-scripts/ifcfg-em1
+
 outputs:
   OS::stack_id:
     description: The software configuration resource
