@@ -4,11 +4,13 @@
     path: "{{ homedir_path }}"
     state: directory
 
+# Using _netdev as a filesystem option prevents the mount from blocking early boot
+# before networking is initialised
 - name: Mount the home directory from the Ceph cluster
   mount:
     path: "{{ homedir_path }}"
     src: "{{ homedir_server }}:/"
     fstype: ceph
     state: mounted
-    opts: "name={{homedir_client}},secretfile=/etc/ceph/ceph.client.{{homedir_client}}.secret"
+    opts: "_netdev,noatime,name={{homedir_client}},secretfile=/etc/ceph/ceph.client.{{homedir_client}}.secret"
     boot: yes
