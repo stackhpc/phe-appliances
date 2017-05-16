@@ -1,0 +1,35 @@
+---
+- name: Empty RSA key fact
+  set_fact:
+    rsa_pubkeys: {}
+
+- name: Create user and RSA key
+  user:
+    state: present
+    system: no
+    name: "{{ item.user }}"
+    uid: "{{ item.uid }}"
+    comment: "{{ item.name }}"
+    createhome: yes
+    home: "{{ homedir }}/{{ item.user }}"
+    generate_ssh_key: yes
+    ssh_key_comment: "{{ item.name }}"
+  with_items: "{{ users }}"
+
+- name: Read user RSA public key
+  slurp:
+    src: "{{ homedir }}/{{ item.user }}/.ssh/id_rsa.pub"
+  with_items: "{{ users }}"
+  register: user_pubkeys
+
+- name: Set user public keys as facts
+  set_fact:
+    rsa_pubkeys: "{{ rsa_pubkeys | combine({ item.item.user: item.content|b64decode }) }}"
+  with_items: "{{ user_pubkeys.results }}"
+
+#- name: Write user's own public key as authorized for SSH access
+#  authorized_key:
+#    user: "{{ item.user }}"
+#    state: present
+#    key: "{{ rsa_pubkeys[item.user] }}"
+#  with_items: "{{ users }}"

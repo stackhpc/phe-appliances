@@ -1,0 +1,32 @@
+---
+- name: Ensure that Keystone user auth packages are installed
+  yum:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - pam-python
+    - pam-keystone
+
+# Takes effect automatically
+- name: Update PAM auth configuration
+  lineinfile:
+    create: no
+    state: present
+    insertbefore: "auth *sufficient *pam_unix.*"
+    line: "auth        sufficient    pam_python.so /usr/lib64/security/keystone-auth.py {{cloud_config}}"
+    path: "{{item}}"
+  with_items:
+    - /etc/pam.d/system-auth-ac
+    - /etc/pam.d/password-auth-ac
+
+- name: Enable PasswordAuthentication in SSH config 
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    create: no
+    state: present
+    insertafter: "^#PasswordAuthentication.*"
+    regexp: "^PasswordAuthentication .*"
+    line: "PasswordAuthentication yes"
+  notify:
+    - Restart SSH
+
