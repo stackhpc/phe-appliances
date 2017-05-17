@@ -1,0 +1,22 @@
+---
+# Cluster infrastructure parameters
+cluster_name: stack
+cluster_nodecount: 2
+cluster_flavor: baremetal-0
+cluster_image: CentOS7-OpenHPC
+# This keypair should exist in OpenStack.  It will be assigned
+# for the cloud user for the next phase of deployment.
+cluster_keypair: rsa_keypair
+
+# Alaska environment configuration parameters
+# Config name of the OpenStack cloud to authenticate against
+alaska_cloud: alaska
+# Mount point for home directories (nb, /home will upset cloud user)
+alaska_homedir: /alaska
+alaska_softiron: 10.4.99.101
+
+# List of cluster users, already defined in OpenStack
+alaska_users:
+  - name: "Example user"
+    user: user
+    uid: 2001

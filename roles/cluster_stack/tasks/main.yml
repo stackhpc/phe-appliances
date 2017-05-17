@@ -8,10 +8,6 @@
     template: "{{ cluster_template }}"
     parameters: "{{ cluster_params }}"
 
-- name: Whats in cluster_stack
-  debug:
-    var: cluster_stack.outputs
-
 - name: Write inventory file for new cluster
   template:
     src: cluster_inventory.j2

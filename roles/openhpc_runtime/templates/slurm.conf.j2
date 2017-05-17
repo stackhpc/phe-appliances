@@ -8,7 +8,7 @@
 #
 # See the slurm.conf man page for more information.
 #
-ClusterName={{ alaska_name }}
+ClusterName={{ cluster_name }}
 ControlMachine={{ groups['control'] | first }}
 #ControlAddr=
 #BackupController=
@@ -96,6 +96,6 @@ SlurmdLogFile=/var/log/slurm.log
 SlurmctldLogFile=/var/log/slurmctld.log
 AccountingStorageType=accounting_storage/filetxt
 Epilog=/etc/slurm/slurm.epilog.clean
-NodeName={{alaska_name}}-compute-[0-{{alaska_nodecount-1}}] Sockets={{hostvars[groups['compute']|first]['ansible_processor_count']}} CoresPerSocket={{hostvars[groups['compute']|first]['ansible_processor_cores']}} ThreadsPerCore={{hostvars[groups['compute']|first]['ansible_processor_threads_per_core']}} State=UNKNOWN
-PartitionName=compute Nodes={{alaska_name}}-compute-[0-{{alaska_nodecount-1}}] Default=YES MaxTime=24:00:00 State=UP
+NodeName={{cluster_name}}-compute-[0-{{cluster_nodecount-1}}] Sockets={{hostvars[groups['compute']|first]['ansible_processor_count']}} CoresPerSocket={{hostvars[groups['compute']|first]['ansible_processor_cores']}} ThreadsPerCore={{hostvars[groups['compute']|first]['ansible_processor_threads_per_core']}} State=UNKNOWN
+PartitionName=compute Nodes={{cluster_name}}-compute-[0-{{cluster_nodecount-1}}] Default=YES MaxTime=24:00:00 State=UP
 ReturnToService=1

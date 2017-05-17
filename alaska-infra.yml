@@ -6,17 +6,17 @@
 
   roles:
     - role: cluster_stack
-      cluster_name: "(( alaska_name }}"
+      cluster_name: "(( cluster_name }}"
       cluster_environment: [ "{{ playbook_dir }}/heat-templates/alaska-env.yaml" ]
       cluster_template: "{{ playbook_dir }}/heat-templates/alaska-cluster.yaml"
       cluster_params:
-        name_prefix: "{{ alaska_name }}"
-        flavor: baremetal-0
-        image: CentOS7-OpenHPC
-        key_name: ilab_sclt100
+        name_prefix: "{{ cluster_name }}"
+        flavor: "{{ cluster_flavor }}"
+        image: "{{ cluster_image }}"
+        key_name: "{{ cluster_keypair }}"
         networks:
           - network: ilab
             subnet: ilab
         num_control: 1
-        num_compute: "{{ alaska_nodecount }}"
+        num_compute: "{{ cluster_nodecount }}"
       cluster_inventory: "{{ playbook_dir }}/openhpc_cluster"

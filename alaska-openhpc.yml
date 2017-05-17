@@ -15,4 +15,4 @@
   remote_user: centos
   become: yes
   roles:
-    - role: openhpc_slurm
+    - role: openhpc_runtime
