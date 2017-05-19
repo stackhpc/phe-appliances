@@ -8,15 +8,11 @@ resources:
   alaska_ceph_setup:
     type: alaska-ceph-setup.yaml
 
-  alaska_ilab_mtu:
-    type: alaska-ilab-mtu.yaml
-
   instance_config:
     type: OS::Heat::MultipartMime
     properties:
       parts:
         - config: { get_resource: alaska_ceph_setup }
-        - config: { get_resource: alaska_ilab_mtu }
 
 outputs:
   OS::stack_id:
