@@ -11,7 +11,7 @@
   roles:
     - role: openhpc_compute
 
-- hosts: all
+- hosts: cluster
   remote_user: centos
   become: yes
   roles:

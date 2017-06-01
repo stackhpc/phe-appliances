@@ -1,7 +1,13 @@
 ---
+# Query OpenStack Barbican to retrieve secret keys
+# needed for a cluster deployment
+- hosts: openstack
+  roles:
+    - role: alaska_secrets
+  
 # This playbook applies site config for Ceph support,
 # in particular CephFS home directories
-- hosts: all
+- hosts: cluster
   remote_user: centos
   become: yes
   roles:
