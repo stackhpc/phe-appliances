@@ -92,10 +92,13 @@ JobCompType=jobcomp/none
 # COMPUTE NODES
 # OpenHPC default configuration
 PropagateResourceLimitsExcept=MEMLOCK
-SlurmdLogFile=/var/log/slurm.log
-SlurmctldLogFile=/var/log/slurmctld.log
+# By default, SLURM will log to syslog, which is what we want
+#SlurmdLogFile=/var/log/slurm.log
+#SlurmctldLogFile=/var/log/slurmctld.log
 AccountingStorageType=accounting_storage/filetxt
 Epilog=/etc/slurm/slurm.epilog.clean
 NodeName={{cluster_name}}-compute-[0-{{cluster_nodecount-1}}] Sockets={{hostvars[groups['compute']|first]['ansible_processor_count']}} CoresPerSocket={{hostvars[groups['compute']|first]['ansible_processor_cores']}} ThreadsPerCore={{hostvars[groups['compute']|first]['ansible_processor_threads_per_core']}} State=UNKNOWN
 PartitionName=compute Nodes={{cluster_name}}-compute-[0-{{cluster_nodecount-1}}] Default=YES MaxTime=24:00:00 State=UP
-ReturnToService=1
+# Want nodes that drop out of SLURM's configuration to be automatically 
+# returned to service when they come back.
+ReturnToService=2
