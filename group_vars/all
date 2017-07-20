@@ -2,7 +2,7 @@
 # Cluster infrastructure parameters
 cluster_name: stack
 cluster_nodecount: 2
-cluster_flavor: baremetal-0
+cluster_flavor: compute-A
 cluster_image: CentOS7-OpenHPC
 # This keypair should exist in OpenStack.  It will be assigned
 # for the cloud user for the next phase of deployment.
