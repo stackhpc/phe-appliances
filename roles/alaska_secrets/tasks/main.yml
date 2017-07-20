@@ -1,0 +1,10 @@
+---
+- name: Lookup Ceph client key
+  barbi:
+    key: ceph.client.alaska.key
+  register: alaska_ceph_key
+
+- name: Lookup Monasca agent credentials
+  barbi:
+    key: alaska.auth.p3-monitor
+  register: alaska_auth_p3_monitor

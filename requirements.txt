@@ -1,3 +1,5 @@
 ansible>=2.3
 os-client-config
 shade
+python-barbicanclient
+python-keystoneclient
