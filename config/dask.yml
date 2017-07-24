@@ -1,8 +1,20 @@
 ---
+# This name is used for the Heat stack and as a prefix for the
+# cluster node hostnames.
 cluster_name: dask
+
+# This parameter should be set to the name of an RSA keypair you have
+# uplaoded to OpenStack.
 cluster_keypair: ilab_sclt100
+
+# Site-specific network configuration.
 cluster_net:
   - { net: "ilab", subnet: "ilab" }
+
+# Multi-node application topology.  In this case we have a Dask
+# scheduler node (which also offers login services) and a number
+# of worker nodes, which mount the same filesystems but are not
+# intended to be interactive.
 cluster_groups:
   - "{{ dask_scheduler }}"
   - "{{ dask_worker }}"
@@ -18,4 +30,16 @@ dask_worker:
   flavor: "compute-A"
   image: "CentOS7-Anaconda3"
   num_nodes: 2
+
+# Node group assignments for cluster roles.
+# These group assignments are appended to the cluster inventory file.
+# The names of these roles are cross-referenced to groups referred to
+# in playbooks in the ansible/ directory.
+cluster_roles:
+  - name: "ceph_client"
+    groups: "{{ cluster_groups }}"
+  - name: "login"
+    groups: [ "{{ dask_scheduler }}" ]
+  - name: "batch"
+    groups: [ "{{ dask_worker }}" ]
 

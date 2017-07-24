@@ -20,11 +20,11 @@ through YAML environment files, then invoked through the
 
 First, download and deploy the role from Ansible Galaxy:
 
-`ansible-galaxy install -r requirements.yml -p $PWD/roles`
+`cd ansible ; ansible-galaxy install -r requirements.yml -p $PWD/roles`
 
 Some example YAML template configurations are available in the `config/`
-subdirectory.
-To use these, some non-default parameters should first be applied:
+subdirectory.  To use these, some default parameters should first be
+modified:
 
 | Name | Description |
 |------|-------------|
@@ -34,5 +34,13 @@ To use these, some non-default parameters should first be applied:
 
 Infrastructure invocation then takes the form (for example): 
 
-`ansible-playbook -e @config/openhpc.yml -i inventory alaska-infra.yml`
+`ansible-playbook -e @config/openhpc.yml -i ansible/inventory ansible/cluster-infra.yml`
+
+Once the infrastructure playbook has run to completion, an inventory
+for the newly-created nodes will have been generated in the `ansible/`
+subdirectory.  This inventory is suffixed with the value set in
+`cluster_name`.  The cluster software can be deployed and configured
+using another playbook (for example):
+
+`ansible-playbook -e @config/openhpc.yml -i ansible/inventory_openhpc ansible/openhpc.yml`
 

@@ -1,0 +1,20 @@
+---
+# Create users, including creating their CephFS home dirs
+# if required.  Generate an RSA public key and configure as 
+# an OpenStack-aware login node.
+- hosts: cluster_login
+  remote_user: centos
+  become: yes
+  roles:
+    - role: user_setup
+      users: "{{ alaska_users }}"
+      homedir: "{{ alaska_homedir }}"
+
+- hosts: cluster_batch
+  remote_user: centos
+  become: yes
+  roles:
+    - role: user_propagate
+      users: "{{ alaska_users }}"
+      homedir: "{{ alaska_homedir }}"
+

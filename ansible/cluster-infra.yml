@@ -5,11 +5,11 @@
 - hosts: openstack
 
   roles:
-    - role: cluster_stack
-      cluster_template: "{{ playbook_dir }}/heat-templates/alaska-cluster.yaml"
-      cluster_environment: [ "{{ playbook_dir }}/heat-templates/alaska-env.yaml" ]
+    - role: stackhpc.cluster-infra
+      cluster_name: "{{ cluster_name }}"
       cluster_params:
         cluster_prefix: "{{ cluster_name }}"
         cluster_keypair: "{{ cluster_keypair }}"
         cluster_groups: "{{ cluster_groups }}"
-      cluster_inventory: "{{ playbook_dir }}/inventory_{{ cluster_name }}"
+        cluster_net: "{{ cluster_net }}"
+      cluster_roles: "{{ cluster_roles }}"

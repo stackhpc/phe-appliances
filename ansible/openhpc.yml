@@ -1,11 +1,15 @@
 ---
-- hosts: control
+- include: setup.yml
+- include: ceph-client.yml
+- include: users.yml
+
+- hosts: cluster_login
   remote_user: centos
   become: yes
   roles:
     - role: openhpc_control
 
-- hosts: compute
+- hosts: cluster_batch
   remote_user: centos
   become: yes
   roles:
@@ -16,3 +20,4 @@
   become: yes
   roles:
     - role: openhpc_runtime
+      slurm_partitions: "{{ openhpc_slurm_partitions }}"

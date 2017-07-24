@@ -1,0 +1,16 @@
+---
+# Query OpenStack Barbican to retrieve secret keys
+# needed for a cluster deployment
+- hosts: openstack
+  roles:
+    - role: alaska_secrets
+      secret_name: "alaska.auth.p3-monitor"
+      secret_var: "alaska_auth_p3_monitor"
+  
+# Apply generic setup configuration that is universally useful
+- hosts: cluster
+  remote_user: centos
+  become: yes
+  roles:
+    - role: cluster_setup
+      monitor_secret: "{{ hostvars['localhost']['alaska_auth_p3_monitor'] }}"

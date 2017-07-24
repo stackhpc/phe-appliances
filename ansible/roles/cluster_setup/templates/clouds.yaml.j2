@@ -1,0 +1,13 @@
+---
+clouds:
+  alaska:
+    auth:
+      auth_url: http://10.60.253.1:5000
+      project_name: p3
+  alaska-monasca:
+    auth:
+      auth_url: http://10.60.253.1:5000
+      project_name: p3
+      username: p3-monitor
+      password: {{ monitor_secret }}
+    region: RegionOne

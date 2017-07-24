@@ -1,0 +1,9 @@
+---
+- name: Retrieve project secret from Barbican
+  barbi:
+    key: "{{ secret_name }}"
+  register: barbi_secret
+
+- name: Set fact for the retrieved secret
+  set_fact:
+    "{{ secret_var }}": "{{ barbi_secret.secret }}"

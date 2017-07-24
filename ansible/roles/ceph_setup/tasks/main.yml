@@ -31,11 +31,9 @@
     group: root
 
 - name: Write Ceph client secret
-  lineinfile:
-    create: yes
-    state: present
-    path: /etc/ceph/ceph.client.{{ceph_client}}.secret
+  template:
+    src: ceph.client.secret.j2
+    dest: /etc/ceph/ceph.client.{{ceph_client}}.secret
     mode: 0600
     owner: root
     group: root
-    line: "{{ceph_secret}}"
