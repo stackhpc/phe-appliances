@@ -1,0 +1,26 @@
+---
+cluster_name: orange
+cluster_keypair: ilab_sclt100
+cluster_groups:
+  - "{{ orangefs_meta }}"
+  - "{{ orangefs_data }}"
+  - "{{ orangefs_client }}"
+
+orangefs_meta:
+  name: "meta"
+  flavor: "storage-A"
+  image: "FedoraCore"
+  num_nodes: 1
+
+orangefs_data:
+  name: "data"
+  flavor: "storage-B"
+  image: "FedoraCore"
+  num_nodes: 2
+
+orangefs_client:
+  name: "client"
+  flavor: "compute-A"
+  image: "FedoraCore"
+  num_nodes: 4
+

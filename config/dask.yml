@@ -1,0 +1,21 @@
+---
+cluster_name: dask
+cluster_keypair: ilab_sclt100
+cluster_net:
+  - { net: "ilab", subnet: "ilab" }
+cluster_groups:
+  - "{{ dask_scheduler }}"
+  - "{{ dask_worker }}"
+
+dask_scheduler:
+  name: "control"
+  flavor: "compute-A"
+  image: "CentOS7-Anaconda3"
+  num_nodes: 1
+
+dask_worker:
+  name: "worker"
+  flavor: "compute-A"
+  image: "CentOS7-Anaconda3"
+  num_nodes: 2
+

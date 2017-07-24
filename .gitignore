@@ -1,0 +1,7 @@
+*.swp
+
+# Ansible retry files.
+ansible/*.retry
+
+# Ansible roles installed from Galaxy.
+ansible/roles/stackhpc.cluster-infra/

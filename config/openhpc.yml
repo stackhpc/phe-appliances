@@ -1,0 +1,58 @@
+---
+cluster_name: openhpc
+cluster_keypair: ilab_sclt100
+cluster_net:
+  - { net: "ilab", subnet: "ilab" }
+cluster_groups:
+  - "{{ slurm_login }}"
+  - "{{ slurm_compute }}"
+
+slurm_login:
+  name: "login"
+  flavor: "compute-B"
+  image: "CentOS7-OpenHPC"
+  num_nodes: 1
+
+slurm_compute:
+  name: "compute"
+  flavor: "compute-A"
+  image: "CentOS7-OpenHPC"
+  num_nodes: 2
+
+# A list of OpenHPC runtime libraries to install on compute and control nodes
+openhpc_packages:
+  - strace
+  - flex
+  - bison
+  - blas
+  - blas-devel
+  - lapack
+  - lapack-devel
+  - cfitsio
+  - cfitsio-devel
+  - wcslib
+  - wcslib-utils
+  - wcslib-devel
+  - gcc-gfortran 
+  - gcc-c++
+  - ncurses
+  - ncurses-devel
+  - readline
+  - readline-devel
+  - python-devel
+  - boost
+  - boost-devel
+  - fftw
+  - fftw-devel
+  - hdf5
+  - hdf5-devel
+  - numpy
+  - boost-python
+  - hdf5-gnu-ohpc
+  - phdf5-gnu-mvapich2-ohpc
+  - gnu-compilers-ohpc
+  - mvapich2-gnu-ohpc
+  - imb-gnu-mvapich2-ohpc
+  - openblas-gnu-ohpc
+  - scalapack-gnu-mvapich2-ohpc
+
