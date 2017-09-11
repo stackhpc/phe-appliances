@@ -1,0 +1,45 @@
+---
+# This name is used for the Heat stack and as a prefix for the
+# cluster node hostnames.
+cluster_name: redis
+
+# This parameter should be set to the name of an RSA keypair you have
+# uplaoded to OpenStack.
+cluster_keypair: ilab_sclt100
+
+# Site-specific network configuration.
+cluster_net:
+  - { net: "ilab", subnet: "ilab" }
+
+# Multi-node application topology.  In this case we have a SLURM
+# deployment formed from a login/controller node and a number of
+# batch compute nodes.
+cluster_groups:
+  - "{{ redis_master }}"
+  - "{{ redis_slave }}"
+  - "{{ redis_sentinel }}"
+
+redis_master:
+  name: "master"
+  flavor: "compute-A"
+  image: "Ubuntu16"
+  num_nodes: 1
+
+redis_slave:
+  name: "slave"
+  flavor: "compute-A"
+  image: "Ubuntu16"
+  num_nodes: 3
+
+redis_sentinel:
+  name: "sentinel"
+  flavor: "compute-A"
+  image: "Ubuntu16"
+  num_nodes: 3
+
+# Node group assignments for cluster roles.
+# These group assignments are appended to the cluster inventory file.
+# The names of these roles are cross-referenced to groups referred to
+# in playbooks in the ansible/ directory.
+cluster_roles: []
+
