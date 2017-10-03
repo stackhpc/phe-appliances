@@ -21,13 +21,13 @@ cluster_groups:
 slurm_login:
   name: "login"
   flavor: "compute-B"
-  image: "CentOS7-OpenHPC"
+  image: "CentOS7.4-OpenHPC"
   num_nodes: 1
 
 slurm_compute:
   name: "compute"
   flavor: "compute-A"
-  image: "CentOS7-OpenHPC"
+  image: "CentOS7.4-OpenHPC"
   num_nodes: 2
 
 # Node group assignments for cluster roles.
@@ -79,7 +79,10 @@ openhpc_packages:
   - phdf5-gnu-mvapich2-ohpc
   - gnu-compilers-ohpc
   - mvapich2-gnu-ohpc
+  - openmpi-gnu-ohpc
   - imb-gnu-mvapich2-ohpc
+  - imb-gnu-openmpi-ohpc
   - openblas-gnu-ohpc
   - scalapack-gnu-mvapich2-ohpc
+  - infiniband-diags
 
