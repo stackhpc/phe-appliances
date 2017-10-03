@@ -38,9 +38,6 @@ alaska_users:
   - name: "Ben Mort"
     user: ben
     uid: 2007
-  - name: "Steve Simpson"
-    user: steve
-    uid: 2008
   - name: "Fred Dulwich"
     user: fred
     uid: 2009
@@ -56,3 +53,30 @@ alaska_users:
   - name: "James Kent"
     user: james
     uid: 2013
+  - name: "Tim Cornwell"
+    user: tim
+    uid: 2014
+  - name: "Piers Harding"
+    user: piers
+    uid: 2015
+  - name: "Arjen Tamerus"
+    user: arjen
+    uid: 2016
+  - name: "Bojan Nikolic"
+    user: bojan
+    uid: 2017
+  - name: "Brian"
+    user: brian
+    uid: 2018
+  - name: "Doug Szumski"
+    user: doug
+    uid: 2019
+  - name: "John Garbutt"
+    user: johng
+    uid: 2020
+  - name: "Mark Boulton"
+    user: markb
+    uid: 2021
+  - name: "Markus Dolensky"
+    user: markus
+    uid: 2022
