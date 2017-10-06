@@ -1,0 +1,4 @@
+---
+- include: slurm.yml
+- include: infiniband.yml
+- include: runtime.yml

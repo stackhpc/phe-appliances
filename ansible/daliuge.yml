@@ -1,0 +1,23 @@
+---
+- include: setup.yml
+- include: ceph-client.yml
+- include: users.yml
+
+- hosts: cluster_isl-mgr
+  remote_user: centos
+  become: yes
+  roles:
+    - role: daliuge_isl-mgr
+
+- hosts: cluster_node-mgr
+  remote_user: centos
+  become: yes
+  roles:
+    - role: daliuge_isl-mgr
+
+- hosts: cluster
+  remote_user: centos
+  become: yes
+  roles:
+    - role: openhpc_runtime
+      slurm_partitions: "{{ openhpc_slurm_partitions }}"

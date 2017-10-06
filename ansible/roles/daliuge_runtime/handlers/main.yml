@@ -1,0 +1,6 @@
+---
+- name: Restart SLURM service
+  service:
+    name: "{{slurm_service}}"
+    state: restarted
+  
