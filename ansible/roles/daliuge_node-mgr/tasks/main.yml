@@ -1,19 +1,31 @@
 ---
-- name: Install OpenHPC compute image packages
-  yum:
-    name: "@ohpc-base-compute"
-    state: installed
+# daliuge_node-mgr/tasks/main.yml
+#
+#- name: Apply customised DALiuGE Node Manager configuration
+#  template:
+#    src: daliuge-node.conf.j2
+#    dest: /etc/slurm/slurm.conf
+#    owner: root
+#    group: root
+#    mode: 0644
+#  notify:
+#    - Restart SLURM service
 
-- name: Install OpenHPC SLURM client packages
-  yum:
-    name: "@ohpc-slurm-client"
-    state: installed
+#- name: Install OpenHPC compute image packages
+#  yum:
+#    name: "@ohpc-base-compute"
+#    state: installed
 
-- name: Select the SLURM service to control
-  set_fact:
-    slurm_service: slurmd
+#- name: Install OpenHPC SLURM client packages
+#  yum:
+#    name: "@ohpc-slurm-client"
+#    state: installed
 
-- name: Install OpenHPC LMOD
-  yum:
-    name: "lmod-ohpc"
-    state: installed
+#- name: Select the SLURM service to control
+#  set_fact:
+#    slurm_service: slurmd
+
+#- name: Install OpenHPC LMOD
+#  yum:
+#    name: "lmod-ohpc"
+#    state: installed

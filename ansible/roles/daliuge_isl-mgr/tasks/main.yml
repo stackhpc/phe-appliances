@@ -1,9 +1,21 @@
 ---
-- name: Install OpenHPC master SLURM packages
-  yum:
-    name: "@ohpc-slurm-server"
-    state: installed
+# daliuge_isl-mgr/tasks/main.yml
+#
+#- name: Apply customised DALiuGE Island Manager configuration
+#  template:
+#    src: daliuge-node.conf.j2
+#    dest: /etc/slurm/slurm.conf
+#    owner: root
+#    group: root
+#    mode: 0644
+#  notify:
+#    - Restart SLURM service
 
-- name: Select the SLURM service to control
-  set_fact:
-    slurm_service: slurmctld
+#- name: Install OpenHPC master SLURM packages
+#  yum:
+#    name: "@ohpc-slurm-server"
+#    state: installed
+
+#- name: Select the SLURM service to control
+#  set_fact:
+#    slurm_service: slurmctld
