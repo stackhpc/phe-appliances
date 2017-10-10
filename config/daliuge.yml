@@ -50,6 +50,11 @@ daligure_node_manages_list:
 
 # A list of packages to install on DALiuGE nodes
 daliuge_packages:
+  - python2-pip
+  - python-virtualenv
+  - svn
+  - zeromq-devel
+  - glibc-devel
   - strace
   - flex
   - bison
