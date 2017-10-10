@@ -1,11 +1,11 @@
 ---
 - name: Install developments tools envrironment group
   yum:
-    name: "@^Development Tools"
+    name: "@Development Tools"
     state: installed
 
 - name: Ensure selected OpenHPC packages are installed
   yum:
     name: "{{item}}"
     state: present
-  with_items: "{{openhpc_packages}}"
+  with_items: "{{daliuge_packages}}"
