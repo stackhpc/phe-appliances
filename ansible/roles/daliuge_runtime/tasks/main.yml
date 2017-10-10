@@ -1,4 +1,4 @@
 ---
-- include: slurm.yml
-- include: infiniband.yml
 - include: runtime.yml
+- include: daliuge.yml
+- include: infiniband.yml

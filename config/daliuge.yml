@@ -49,36 +49,7 @@ daligure_node_manages_list:
   - "{{ dlg_node_mgr }}"
 
 # A list of packages to install on DALiuGE nodes
-openhpc_packages:
-  - python2-pip
-  - python-virtualenv
-  - svn
-  - zeromq-devel
-  - glibc-devel
-  - autoconf
-  - automake
-  - bison
-  - byacc
-  - cscope
-  - ctags
-  - diffstat
-  - doxygen
-  - elfutils
-  - flex
-  - gcc
-  - gcc-c++
-  - gcc-gfortran
-  - indent
-  - intltool
-  - libtool
-  - patch
-  - patchutils
-  - rcs
-  - redhat-rpm-config
-  - rpm-build
-  - rpm-sign
-  - subversion
-  - swig
+daliuge_packages:
   - strace
   - flex
   - bison

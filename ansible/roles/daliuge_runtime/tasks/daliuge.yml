@@ -1,0 +1,34 @@
+---
+- name: Update and/or install pip packages
+  command: pip install -U pip setuptools
+
+- name: Clone the DALiuGE git reo
+  command: git clone --branch v0.3.1 https://github.com/ICRAR/daliuge.git
+
+- name: Install DALiuGE
+  command: pip install .
+
+#- name: Ensure the SLURM spool directory exists
+#  file:
+#    path: /var/spool/slurm
+#    owner: slurm
+#    group: slurm
+#    mode: 0755
+#    state: directory
+
+#- name: Ensure SLURM services are enabled
+#  service:
+#    name: "{{slurm_service}}"
+#    enabled: yes
+#  notify:
+#    - Restart SLURM service
+
+#- name: Apply customised SLURM configuration
+#  template:
+#    src: slurm.conf.j2
+#    dest: /etc/slurm/slurm.conf
+#    owner: root
+#    group: root
+#    mode: 0644
+#  notify: 
+#    - Restart SLURM service
