@@ -8,7 +8,7 @@
   become: yes
   roles:
     - role: daliuge_runtime
-      node_managers: "{{ cluster_node_mgr }}"
+      node_managers: "{{ daligure_node_manages_list }}"
 
 #- hosts: cluster_isl_mgr
 #  remote_user: centos
