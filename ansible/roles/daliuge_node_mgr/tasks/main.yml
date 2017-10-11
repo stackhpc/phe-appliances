@@ -29,11 +29,14 @@
     group: root
     mode: 0755
 
-- name: Add dlg-dim service
-  command: chkconfig --add dlg-dim
+- name: Add dlg-nm service
+  command: chkconfig --add dlg-nm
 
-- name: Enable dlg-dim service
-  command: chkconfig dlg-dim on
+- name: Enable dlg-nm service
+  command: chkconfig dlg-nm on
+
+- name: Start dlg-nm service
+  command: service dlg-nm start
 
 - name: Select the DALiuGE service to control
   set_fact:
