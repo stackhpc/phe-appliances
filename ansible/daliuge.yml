@@ -1,7 +1,7 @@
 ---
-#- include: setup.yml
-#- include: ceph-client.yml
-#- include: users.yml
+- include: setup.yml
+- include: ceph-client.yml
+- include: users.yml
 
 - hosts: cluster
   remote_user: centos
