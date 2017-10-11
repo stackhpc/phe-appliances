@@ -4,7 +4,7 @@
     name: "@Development Tools"
     state: installed
 
-- name: Ensure selected OpenHPC packages are installed
+- name: Ensure selected packages are installed
   yum:
     name: "{{item}}"
     state: present
