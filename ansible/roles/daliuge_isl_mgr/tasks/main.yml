@@ -20,6 +20,9 @@
     src: daliuge/etc/init-scripts/dlg-dim
     dest: /etc/init.d/dlg-dim
     remote_src: yes
+    owner: root
+    group: root
+    mode: 0755
 
 - name: Select the DALiuGE service to control
   set_fact:
