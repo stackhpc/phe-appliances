@@ -20,4 +20,4 @@
   remote_user: centos
   become: yes
   roles:
-    - role: daliuge_isl_mgr
+    - role: daliuge_node_mgr
