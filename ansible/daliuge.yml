@@ -10,14 +10,14 @@
     - role: daliuge_runtime
       node_managers: "{{ cluster_node_mgr }}"
 
-#- hosts: cluster_isl-mgr
+#- hosts: cluster_isl_mgr
 #  remote_user: centos
 #  become: yes
 #  roles:
-#    - role: daliuge_isl-mgr
+#    - role: daliuge_isl_mgr
 
-#- hosts: cluster_node-mgr
+#- hosts: cluster_node_mgr
 #  remote_user: centos
 #  become: yes
 #  roles:
-#    - role: daliuge_isl-mgr
+#    - role: daliuge_isl_mgr
