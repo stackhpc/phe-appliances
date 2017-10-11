@@ -10,6 +10,26 @@
   args:
       chdir: daliuge/
 
+- copy:
+    src: daliuge/etc/init-scripts/dlg-dim
+    dest: /etc/init.d/dlg-dim
+    remote_src: yes
+
+- copy:
+    src: daliuge/etc/init-scripts/dlg-nm
+    dest: /etc/init.d/dlg-nm
+    remote_src: yes
+
+- name: Apply customised DALiuGE configuration
+  template:
+    src: dlg.options.j2
+    dest: /etc/sysconfig/dlg
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Restart DALiuGE service
+
 #- name: Ensure the SLURM spool directory exists
 #  file:
 #    path: /var/spool/slurm
