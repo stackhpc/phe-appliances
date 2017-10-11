@@ -2,11 +2,8 @@
 - name: Update and/or install pip packages
   command: pip install -U pip setuptools
 
-#- name: Remove any old copy of DALiuGE
-#  command: rm -rf daliuge
-
-- name: Delete DALiuGE directory
-  - file: path=daliuge recurse=yes state=absent
+- name: Remove any old copy of DALiuGE
+  command: rm -rf daliuge
 
 - name: Clone the DALiuGE git reo
   command: git clone --branch v0.3.2 https://github.com/ICRAR/daliuge.git
