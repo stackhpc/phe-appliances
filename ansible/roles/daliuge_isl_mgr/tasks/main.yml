@@ -24,6 +24,12 @@
     group: root
     mode: 0755
 
+- name: Add dlg-dim service
+  command: chkconfig --add dlg-dim
+
+- name: Enable dlg-dim service
+  command: chkconfig dlg-dim on
+
 - name: Select the DALiuGE service to control
   set_fact:
     daliuge_service: dlg_dim
