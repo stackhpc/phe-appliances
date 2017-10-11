@@ -45,9 +45,9 @@ dlg_node_mgr:
 cluster_roles:
   - name: "ceph_client"
     groups: "{{ cluster_groups }}"
-  - name: "isl-mgr"
+  - name: "isl_mgr"
     groups: [ "{{ dlg_data_isl_mgr }}" ]
-  - name: "node-mgr"
+  - name: "node_mgr"
     groups: [ "{{ dlg_node_mgr }}" ]
 
 # Define a list of DALiuGE Node Managers to create.

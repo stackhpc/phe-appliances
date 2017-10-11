@@ -1,6 +1,6 @@
 ---
-- include: setup.yml
-- include: ceph-client.yml
+#- include: setup.yml
+#- include: ceph-client.yml
 #- include: users.yml
 
 - hosts: cluster
@@ -8,7 +8,7 @@
   become: yes
   roles:
     - role: daliuge_runtime
-      node_managers: "{{ cluster_node-mgr }}"
+      node_managers: "{{ cluster_node_mgr }}"
 
 #- hosts: cluster_isl-mgr
 #  remote_user: centos
