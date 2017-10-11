@@ -1,5 +1,13 @@
 ---
 - include: setup.yml
+
+# Setup route to ceph network before we setup ceph
+- hosts: cluster
+  remote_user: centos
+  become: yes
+  roles:
+    - role: ceph_network
+
 - include: ceph-client.yml
 - include: users.yml
 
