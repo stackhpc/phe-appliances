@@ -51,6 +51,6 @@ CWD=
 #
 # Comma-separated list of nodes that the Data Island Manager should manage
 #
-{% for group in cluster_node-mgr %}
+{% for group in node_managers %}
 DIM_NODES={{cluster_name}}-{{group.name}}-[0-{{group.num_nodes-1}}]
 {% endfor %}
