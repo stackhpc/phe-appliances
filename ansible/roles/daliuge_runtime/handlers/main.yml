@@ -1,6 +1,5 @@
 ---
-- name: Restart SLURM service
+- name: Restart DALiuGE service
   service:
-    name: "{{slurm_service}}"
+    name: "{{daliuge_service}}"
     state: restarted
-  

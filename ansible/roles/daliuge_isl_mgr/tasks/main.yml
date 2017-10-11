@@ -16,6 +16,11 @@
 #    name: "@ohpc-slurm-server"
 #    state: installed
 
-#- name: Select the SLURM service to control
-#  set_fact:
-#    slurm_service: slurmctld
+- copy:
+    src: daliuge/etc/init-scripts/dlg-dim
+    dest: /etc/init.d/dlg-dim
+    remote_src: yes
+
+- name: Select the DALiuGE service to control
+  set_fact:
+    daliuge_service: dlg_dim
