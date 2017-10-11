@@ -20,8 +20,9 @@
     owner: root
     group: root
     mode: 0644
-  notify:
-    - Restart DALiuGE service
+# Don't need these at the moment as they are started elsewhere
+#  notify:
+#    - Restart DALiuGE service
 
 #- name: Ensure the SLURM spool directory exists
 #  file:
