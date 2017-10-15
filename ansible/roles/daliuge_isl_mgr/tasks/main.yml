@@ -1,0 +1,23 @@
+---
+# daliuge_isl_mgr/tasks/main.yml
+#
+- copy:
+    src: daliuge/etc/init-scripts/dlg-dim
+    dest: /etc/init.d/dlg-dim
+    remote_src: yes
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Add dlg-dim service
+  command: chkconfig --add dlg-dim
+
+- name: Enable dlg-dim service
+  command: chkconfig dlg-dim on
+
+- name: Start dlg-dim service
+  command: service dlg-dim start
+
+- name: Select the DALiuGE service to control
+  set_fact:
+    daliuge_service: dlg_dim

@@ -1,0 +1,11 @@
+---
+- name: Install developments tools envrironment group
+  yum:
+    name: "@Development Tools"
+    state: installed
+
+- name: Ensure selected packages are installed
+  yum:
+    name: "{{item}}"
+    state: present
+  with_items: "{{daliuge_packages}}"

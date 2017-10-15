@@ -8,3 +8,7 @@ ansible/inventory_*
 
 # Ansible roles installed from Galaxy.
 ansible/roles/stackhpc.cluster-infra
+
+# IntelliJ files
+.idea
+*.iml

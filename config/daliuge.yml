@@ -1,0 +1,93 @@
+---
+# Created by Mark Boulton, based on openhpc.yml config file.
+#
+# This name is used for the Heat stack and as a prefix for the
+# cluster node hostnames.
+cluster_name: daliuge-markb
+
+# This parameter should be set to the name of an RSA keypair you have
+# uplaoded to OpenStack.
+cluster_keypair: markb_key
+
+# Node manager port
+node_manager_port: 8000
+
+# Island manager port
+island_manager_port: 8001
+
+# DALiuGE version
+daliuge_version: v0.3.2
+
+# Site-specific network configuration.
+cluster_net:
+  - { net: "ilab", subnet: "ilab" }
+
+# Multi-node application topology.  In this case we have a DALiuGE
+# deployment formed from a Data Island Manager node and a number of
+# Node Manager compute nodes.
+cluster_groups:
+  - "{{ dlg_node_mgr }}"
+  - "{{ dlg_data_isl_mgr }}"
+
+dlg_data_isl_mgr:
+  name: "island-mgr"
+  flavor: "compute-A"
+  image: "CentOS7"
+  num_nodes: 1
+
+dlg_node_mgr:
+  name: "node-mgr"
+  flavor: "compute-A"
+  image: "CentOS7"
+  num_nodes: 2
+
+# Node group assignments for cluster roles.
+# These group assignments are appended to the cluster inventory file.
+# The names of these roles are cross-referenced to groups referred to
+# in playbooks in the ansible/ directory.
+cluster_roles:
+  - name: "ceph_client"
+    groups: "{{ cluster_groups }}"
+  - name: "isl_mgr"
+    groups: [ "{{ dlg_data_isl_mgr }}" ]
+  - name: "node_mgr"
+    groups: [ "{{ dlg_node_mgr }}" ]
+
+# Define a list of DALiuGE Node Managers to create.
+daligure_node_manages_list: 
+  - "{{ dlg_node_mgr }}"
+
+# A list of packages to install on DALiuGE nodes
+daliuge_packages:
+  - python2-pip
+  - python-virtualenv
+  - svn
+  - zeromq-devel
+  - glibc-devel
+  - strace
+  - flex
+  - bison
+  - blas
+  - blas-devel
+  - lapack
+  - lapack-devel
+  - cfitsio
+  - cfitsio-devel
+  - wcslib
+  - wcslib-utils
+  - wcslib-devel
+  - gcc-gfortran 
+  - gcc-c++
+  - ncurses
+  - ncurses-devel
+  - readline
+  - readline-devel
+  - python-devel
+  - boost
+  - boost-devel
+  - fftw
+  - fftw-devel
+  - hdf5
+  - hdf5-devel
+  - numpy
+  - boost-python

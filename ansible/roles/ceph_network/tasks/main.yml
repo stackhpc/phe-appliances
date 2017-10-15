@@ -1,0 +1,6 @@
+---
+- name: Add route to ceph network
+  command: route add -net 10.4.0.0/16 gw 10.60.253.255
+
+- name: Add a persistent route as well
+  shell: echo "10.4.0.0/16 via 10.60.253.255" >> /etc/sysconfig/network-scripts/route-en1

@@ -1,0 +1,25 @@
+---
+- name: Update and/or install pip packages
+  command: pip install -U pip setuptools
+
+- name: Remove any old copy of DALiuGE
+  command: rm -rf daliuge
+
+- name: Clone the DALiuGE git reo
+  command: git clone --branch {{ daliuge_version }} https://github.com/ICRAR/daliuge.git
+
+- name: Install DALiuGE
+  command: pip install -U .
+  args:
+      chdir: daliuge/
+
+- name: Apply customised DALiuGE configuration
+  template:
+    src: dlg.options.j2
+    dest: /etc/sysconfig/dlg
+    owner: root
+    group: root
+    mode: 0644
+# Don't need these at the moment as they are started elsewhere
+#  notify:
+#    - Restart DALiuGE service

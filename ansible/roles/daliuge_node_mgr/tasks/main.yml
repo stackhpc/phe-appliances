@@ -1,0 +1,23 @@
+---
+# daliuge_node_mgr/tasks/main.yml
+#
+- copy:
+    src: daliuge/etc/init-scripts/dlg-nm
+    dest: /etc/init.d/dlg-nm
+    remote_src: yes
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Add dlg-nm service
+  command: chkconfig --add dlg-nm
+
+- name: Enable dlg-nm service
+  command: chkconfig dlg-nm on
+
+- name: Start dlg-nm service
+  command: service dlg-nm start
+
+- name: Select the DALiuGE service to control
+  set_fact:
+    daliuge_service: dlg_nm

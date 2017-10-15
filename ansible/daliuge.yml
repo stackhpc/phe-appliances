@@ -1,0 +1,31 @@
+---
+- include: setup.yml
+
+# Setup route to ceph network before we setup ceph
+- hosts: cluster
+  remote_user: centos
+  become: yes
+  roles:
+    - role: ceph_network
+
+- include: ceph-client.yml
+- include: users.yml
+
+- hosts: cluster
+  remote_user: centos
+  become: yes
+  roles:
+    - role: daliuge_runtime
+      node_managers: "{{ daligure_node_manages_list }}"
+
+- hosts: cluster_isl_mgr
+  remote_user: centos
+  become: yes
+  roles:
+    - role: daliuge_isl_mgr
+
+- hosts: cluster_node_mgr
+  remote_user: centos
+  become: yes
+  roles:
+    - role: daliuge_node_mgr
