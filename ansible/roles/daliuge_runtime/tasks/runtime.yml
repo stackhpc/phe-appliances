@@ -8,4 +8,4 @@
   yum:
     name: "{{item}}"
     state: installed
-    with_items: "{{daliuge_packages}}"
+  with_items: "{{daliuge_packages}}"
