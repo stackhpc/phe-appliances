@@ -1,17 +1,26 @@
 ---
-- name: Update and/or install pip packages
-  command: pip install -U pip setuptools
+# Update and/or install pip packages
+- pip:
+    name: pip setuptools
+    state: latest
 
-- name: Remove any old copy of DALiuGE
-  command: rm -rf daliuge
+# Remove any old copy of DALiuGE
+- file:
+    path: daliuge
+    state: absent
 
-- name: Clone the DALiuGE git reo
-  command: git clone --branch {{ daliuge_version }} https://github.com/ICRAR/daliuge.git
+# Clone the DALiuGE git reo
+#  command: git clone --branch {{ daliuge_version }} https://github.com/ICRAR/daliuge.git
+- git:
+    repo: https://github.com/ICRAR/daliuge.git
+    dest: daliuge
+    version: "{{daliuge_version}}"
 
-- name: Install DALiuGE
-  command: pip install -U .
-  args:
-      chdir: daliuge/
+# Install DALiuGE
+- pip:
+    name: .
+    chdir: daliuge/
+    state: latest
 
 - name: Apply customised DALiuGE configuration
   template:
