@@ -16,7 +16,7 @@ node_manager_port: 8000
 island_manager_port: 8001
 
 # DALiuGE version
-daliuge_version: v0.3.2
+daliuge_version: v0.4.0
 
 # Site-specific network configuration.
 cluster_net:
