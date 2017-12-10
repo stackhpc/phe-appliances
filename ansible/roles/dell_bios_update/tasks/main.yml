@@ -1,0 +1,33 @@
+---
+
+- name: Retrieve the firmware image from Dell downloads site
+  get_url:
+    url: "{{ dell_bios_url }}"
+    dest: "/tmp"
+    mode: 0755
+  register: bios_data
+
+- name: Execute the BIOS firmware upgrade
+  command: "{{ bios_data.dest }} -q"
+  become: True
+
+- name: Remove the BIOS firmware image
+  file:
+    path: "{{ bios_data.dest }}"
+    state: absent
+
+- name: Retrieve the firmware image from Dell downloads site
+  get_url:
+    url: "{{ dell_idrac_url }}"
+    dest: "/tmp"
+    mode: 0755
+  register: idrac_data
+
+- name: Execute the iDRAC firmware upgrade
+  command: "{{ idrac_data.dest }} -q"
+  become: True
+
+- name: Remove the iDRAC firmware image
+  file:
+    path: "{{ idrac_data.dest }}"
+    state: absent

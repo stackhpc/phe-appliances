@@ -1,0 +1,23 @@
+---
+- name: Ensure the unzip package is installed
+  package:
+    name: unzip
+    state: present
+  become: True
+
+- name: Retrieve the GPU firmware image from Dell downloads site
+  unarchive:
+    src: "{{ dell_gpu_url }}"
+    remote_src: yes
+    mode: 0755
+    dest: "/tmp/"
+
+# FIXME: use of magic name here
+- name: Execute the GPU firwmare update from the zipfile
+  command: "/tmp/P100_PCN204260.bin -q"
+  become: True
+
+- name: Remove the update files
+  file:
+    path: "/tmp/P100_PCN204260.bin"
+    state: absent

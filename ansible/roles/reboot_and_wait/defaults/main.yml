@@ -1,0 +1,3 @@
+---
+reboot_down_timeout: 120
+reboot_up_timeout: 600

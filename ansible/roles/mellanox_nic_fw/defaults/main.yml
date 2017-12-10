@@ -1,0 +1,3 @@
+---
+mellanox_nic_mst: "mt4115_pciconf0"
+mellanox_nic_fw_extra_params: ""
