@@ -65,8 +65,12 @@ cluster_roles:
   - name: "Dell_R730XD"
     groups: [ "{{ storage_A }}", "{{ storage_B }}" ]
 
+cluster_group_vars:
+  cluster:
+    ansible_user: centos
+
 mellanox_nic_mst: "mt4115_pciconf0"
-# Firmware directoryis relative to the playbook path
+# Firmware directory is relative to the playbook path
 mellanox_nic_fw_bin: "../fw-ConnectX4-rel-12_20_1010-MCX456A-ECA_Ax-FlexBoot-3.5.210.bin"
 mellanox_nic_fw_extra_params: "--allow_psid_change"
 
