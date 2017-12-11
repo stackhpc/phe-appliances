@@ -12,6 +12,18 @@
     mode: 0755
     dest: "/tmp/"
 
+# Joe's tip on modules to unload first (in this order)
+- name: Unload Nvidia kernel modules
+  command: "rmmod {{item}}"
+  become: True
+  with_items:
+  - "nv_peer_mem"
+  - "gdrdrv"
+  - "nvidia_uvm"
+  - "nvidia_drm"
+  - "nvidia_modeset"
+  - "nvidia"
+
 # FIXME: use of magic name here
 - name: Execute the GPU firwmare update from the zipfile
   command: "/tmp/P100_PCN204260.bin -q"
