@@ -6,7 +6,7 @@
 - name: Ensure the node goes down
   local_action:
     module: wait_for
-    host: "{{ ansible_default_ipv4['address'] }}"
+    host: "{{ ansible_host | default(inventory_hostname) }}"
     port: 22
     state: stopped
     timeout: "{{ reboot_down_timeout }}"
@@ -14,7 +14,7 @@
 - name: Wait for SSH access to return
   local_action:
     module: wait_for
-    host: "{{ ansible_default_ipv4['address'] }}"
+    host: "{{ ansible_host | default(inventory_hostname) }}"
     port: 22
     state: started
     timeout: "{{ reboot_up_timeout }}"
