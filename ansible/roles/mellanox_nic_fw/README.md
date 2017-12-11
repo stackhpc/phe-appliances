@@ -1,5 +1,5 @@
-Reboot a node and wait for it to return
-=======================================
+Mellanox NIC Firmware Upgrade
+=============================
 
 This role applies a NIC firmware upgrade for Mellanox NICs.
 
@@ -11,10 +11,14 @@ Mellanox MFT should be installed in the software image.
 Role Variables
 --------------
 
-`reboot_down_timeout`: Timeout for node shutdown.  Default is 120 seconds.
+`mellanox_nic_mst`: Name of the NIC device under `/dev/mst/`. The default is
+`mt4115_pciconf0`.
 
-`reboot_up_timeout`: Timeout for node restart.  Default is 600 seconds.
+`mellanox_nic_fw_bin`: Path to the Mellanox firmware binary on the Ansible
+control host. Required.
 
+`mellanox_nic_fw_extra_params`: Additional arguments to provide to the
+Mellanox firmware update utility, `flint`.
 
 Dependencies
 ------------
