@@ -7,15 +7,15 @@
   - role: reboot_and_wait
 
 - hosts:
-  - Dell_R630
-  - Dell_R730
-  - Dell_R730XD
-  - Dell_C4130
+  - cluster_Dell_R630
+  - cluster_Dell_R730
+  - cluster_Dell_R730XD
+  - cluster_Dell_C4130
   roles:
   - role: dell_bios_update
   - role: reboot_and_wait
 
-- hosts: Dell_C4130
+- hosts: cluster_Dell_C4130
   roles:
   - role: dell_gpu_update
   - role: reboot_and_wait
