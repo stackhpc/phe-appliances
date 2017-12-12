@@ -19,7 +19,9 @@
 
 # Joe's tip on modules to unload first (in this order)
 - name: Unload Nvidia kernel modules
-  command: "rmmod {{item}}"
+  modprobe:
+    name: "{{ item }}"
+    state: absent
   become: True
   with_items:
   - "nv_peer_mem"
