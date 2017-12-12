@@ -7,9 +7,15 @@
     mode: 0755
   register: bios_data
 
+# Exit codes:
+# 2: Update applied.
+# 3: No update required.
 - name: Execute the BIOS firmware upgrade
   command: "{{ bios_data.dest }} -q"
   become: True
+  register: result
+  failed_when: result.rc not in [2, 3]
+  changed_when: result.rc == 2
 
 - name: Remove the BIOS firmware image
   file:
@@ -23,9 +29,15 @@
     mode: 0755
   register: idrac_data
 
+# Exit codes:
+# 0: Update applied, reboot required.
+# 3: No update required.
 - name: Execute the iDRAC firmware upgrade
   command: "{{ idrac_data.dest }} -q"
   become: True
+  register: result
+  failed_when: result.rc not in [0, 3]
+  changed_when: result.rc == 0
 
 - name: Remove the iDRAC firmware image
   file:
