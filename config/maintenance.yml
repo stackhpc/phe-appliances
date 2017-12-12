@@ -68,12 +68,20 @@ cluster_roles:
 cluster_group_vars:
   cluster:
     ansible_user: centos
+  cluster_Dell_R630:
+    dell_bios_url: "{{ dell_bios_url_default }}"
+  cluster_Dell_R730:
+    dell_bios_url: "{{ dell_bios_url_default }}"
+  cluster_Dell_R730XD:
+    dell_bios_url: "{{ dell_bios_url_default }}"
+  cluster_Dell_C4130:
+    dell_bios_url: "https://downloads.dell.com/FOLDER04625616M/2/C4130_BIOS_WT72N_LN_2.6.0.BIN"
 
 mellanox_nic_mst: "mt4115_pciconf0"
 # Firmware directory is relative to the playbook path
 mellanox_nic_fw_bin: "../fw-ConnectX4-rel-12_20_1010-MCX456A-ECA_Ax-FlexBoot-3.5.210.bin"
 mellanox_nic_fw_extra_params: "--allow_psid_change"
 
-dell_bios_url: "https://downloads.dell.com/FOLDER04667060M/1/BIOS_KGTJ5_LN_2.6.0.BIN"
+dell_bios_url_default: "https://downloads.dell.com/FOLDER04667060M/1/BIOS_KGTJ5_LN_2.6.0.BIN"
 dell_idrac_url: "https://downloads.dell.com/FOLDER04457684M/1/iDRAC-with-Lifecycle-Controller_Firmware_278FC_LN_2.50.50.50_A00.BIN"
 dell_gpu_url: "https://downloads.dell.com/FOLDER04558456M/1/Nvidia_TeslaP100_Vbios_Update.zip"
