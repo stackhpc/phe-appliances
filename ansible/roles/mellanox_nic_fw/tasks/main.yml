@@ -1,0 +1,29 @@
+---
+- name: Copy out the Mellanox firmware zipfile
+  copy:
+    src: "{{ mellanox_nic_fw_bin }}"
+    dest: "/tmp"
+  register: fw_bin_data
+
+- name: Check Mellanox Firmware Tools package is installed
+  yum:
+    name: mft
+    state: installed
+  become: True
+
+- name: Start MST
+  command: "/usr/bin/mst start"
+  become: True
+
+- name: Ensure port 0 mode is IB and port 1 mode is Ethernet
+  command: "mlxconfig -y -d /dev/mst/{{ mellanox_nic_mst }} set LINK_TYPE_P1=1 LINK_TYPE_P2=2"
+  become: True
+
+- name: Execute mft burn
+  command: "flint -y -d /dev/mst/{{ mellanox_nic_mst }} -i {{ fw_bin_data.dest }} {{ mellanox_nic_fw_extra_params }} burn"
+  become: True
+
+- name: Remove the firmware image file
+  file:
+    path: "{{ fw_bin_data.dest }}"
+    state: absent

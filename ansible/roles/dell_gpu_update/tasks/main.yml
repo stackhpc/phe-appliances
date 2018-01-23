@@ -1,0 +1,54 @@
+---
+- name: Ensure the unzip package is installed
+  package:
+    name: unzip
+    state: present
+  become: True
+
+- name: Create a temporary directory in which to unpack the archive
+  tempfile:
+    state: directory
+  register: tempfile_result
+
+- name: Retrieve the GPU firmware image from Dell downloads site
+  unarchive:
+    src: "{{ dell_gpu_url }}"
+    remote_src: yes
+    mode: 0755
+    dest: "{{ tempfile_result.path }}"
+
+# Joe's tip on modules to unload first (in this order)
+- name: Unload Nvidia kernel modules
+  modprobe:
+    name: "{{ item }}"
+    state: absent
+  become: True
+  with_items:
+  - "nv_peer_mem"
+  - "gdrdrv"
+  - "nvidia_uvm"
+  - "nvidia_drm"
+  - "nvidia_modeset"
+  - "nvidia"
+
+- name: Find the GPU firmware image
+  find:
+    path: "{{ tempfile_result.path }}"
+    patterns: "*.bin"
+  register: find_result
+
+- name: Fail if there is not exactly one .bin file in the archive
+  fail:
+    msg: >
+      Expected to find a single .bin file in the GPU firmware update archive.
+      Found: {{ find_result.files | length }}. Files: {{ find_result.files }}
+  when: find_result.files | length != 1
+
+- name: Execute the GPU firwmare update from the zipfile
+  command: "{{ find_result.files[0].path }} -q"
+  become: True
+
+- name: Remove the update files
+  file:
+    path: "{{ tempfile_result.path }}"
+    state: absent

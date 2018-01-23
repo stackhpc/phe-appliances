@@ -1,0 +1,21 @@
+---
+# Playbook for planned maintenance activities
+
+- hosts: cluster
+  roles:
+  - role: mellanox_nic_fw
+  - role: reboot_and_wait
+
+- hosts:
+  - cluster_Dell_R630
+  - cluster_Dell_R730
+  - cluster_Dell_R730XD
+  - cluster_Dell_C4130
+  roles:
+  - role: dell_bios_update
+  - role: reboot_and_wait
+
+- hosts: cluster_Dell_C4130
+  roles:
+  - role: dell_gpu_update
+  - role: reboot_and_wait

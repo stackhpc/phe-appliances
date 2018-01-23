@@ -1,0 +1,87 @@
+---
+# This name is used for the Heat stack and as a prefix for the
+# cluster node hostnames.
+cluster_name: maintenance
+
+# This parameter should be set to the name of an RSA keypair you have
+# uplaoded to OpenStack.
+cluster_keypair: ilab_sclt100
+
+# Site-specific network configuration.
+cluster_net:
+  - { net: "ilab", subnet: "ilab" }
+
+# Multi-node application topology.  In this case we have a SLURM
+# deployment formed from a login/controller node and a number of
+# batch compute nodes.
+cluster_groups:
+  - "{{ compute_A }}"
+  - "{{ compute_B }}"
+  - "{{ storage_A }}"
+  - "{{ storage_B }}"
+  - "{{ compute_GPU }}"
+
+compute_A:
+  name: "compute-A"
+  flavor: "compute-A"
+  image: "CentOS7.4-MAINTENANCE"
+  num_nodes: 28
+
+compute_B:
+  name: "compute-B"
+  flavor: "compute-B"
+  image: "CentOS7.4-MAINTENANCE"
+  num_nodes: 2
+
+compute_GPU:
+  name: "compute-GPU"
+  flavor: "compute-GPU"
+  image: "CentOS7.4-MAINTENANCE"
+  num_nodes: 2
+
+storage_A:
+  name: "storage-A"
+  flavor: "storage-A"
+  image: "CentOS7.4-MAINTENANCE"
+  num_nodes: 1
+
+storage_B:
+  name: "storage-B"
+  flavor: "storage-B"
+  image: "CentOS7.4-MAINTENANCE"
+  num_nodes: 2
+
+# Node group assignments for cluster roles.
+# These group assignments are appended to the cluster inventory file.
+# The names of these roles are cross-referenced to groups referred to
+# in playbooks in the ansible/ directory.
+cluster_roles:
+  - name: "Dell_R630"
+    groups: [ "{{ compute_A }}" ]
+  - name: "Dell_R730"
+    groups: [ "{{ compute_B }}" ]
+  - name: "Dell_C4130"
+    groups: [ "{{ compute_GPU }}" ]
+  - name: "Dell_R730XD"
+    groups: [ "{{ storage_A }}", "{{ storage_B }}" ]
+
+cluster_group_vars:
+  cluster:
+    ansible_user: centos
+  cluster_Dell_R630:
+    dell_bios_url: "{{ dell_bios_url_default }}"
+  cluster_Dell_R730:
+    dell_bios_url: "{{ dell_bios_url_default }}"
+  cluster_Dell_R730XD:
+    dell_bios_url: "{{ dell_bios_url_default }}"
+  cluster_Dell_C4130:
+    dell_bios_url: "https://downloads.dell.com/FOLDER04625616M/2/C4130_BIOS_WT72N_LN_2.6.0.BIN"
+
+mellanox_nic_mst: "mt4115_pciconf0"
+# Firmware directory is relative to the playbook path
+mellanox_nic_fw_bin: "../fw-ConnectX4-rel-12_20_1010-MCX456A-ECA_Ax-FlexBoot-3.5.210.bin"
+mellanox_nic_fw_extra_params: "--allow_psid_change"
+
+dell_bios_url_default: "https://downloads.dell.com/FOLDER04667060M/1/BIOS_KGTJ5_LN_2.6.0.BIN"
+dell_idrac_url: "https://downloads.dell.com/FOLDER04457684M/1/iDRAC-with-Lifecycle-Controller_Firmware_278FC_LN_2.50.50.50_A00.BIN"
+dell_gpu_url: "https://downloads.dell.com/FOLDER04558456M/1/Nvidia_TeslaP100_Vbios_Update.zip"
