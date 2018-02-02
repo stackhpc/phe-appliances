@@ -32,8 +32,8 @@
     monasca_rsyslog_api_endpoint: "http://{{ alaska_monitoring_server }}:5607/v3.0"
 
 - name: Configure dashboards
-  hosts: cluster_login[0]
-
+  hosts: cluster_login
+  run_once: true
   roles:
   - role: stackhpc.grafana-conf
     grafana_conf_organisation: "{{ project_name }}"
