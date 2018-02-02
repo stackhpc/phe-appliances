@@ -1,2 +1,5 @@
 ---
 - src: stackhpc.cluster-infra
+- src: stackhpc.monasca-agent
+- src: stackhpc.monasca-rsyslog
+- src: stackhpc.grafana-conf

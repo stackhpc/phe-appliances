@@ -15,6 +15,23 @@ alaska_cloud: alaska
 alaska_homedir: /alaska
 alaska_softiron: 10.4.99.101
 
+# OpenStack fully qualified project name
+project_name: p3@default
+
+# Virtual IP address of the controller node
+controller_vip: 10.60.253.1
+
+# IP address from which the logging and monitoring server can be accessed
+alaska_monitoring_server: 10.60.253.3
+
+# OpenStack credentials for posting logs and metrics for the P3 project
+monasca_agent_p3_username: p3-monasca-agent
+monasca_agent_p3_password: "{{ vault_monasca_agent_password }}"
+
+# Local Grafana admin account for configuring Grafana
+grafana_admin_username: grafana-admin
+grafana_admin_password: "{{ vault_grafana_admin_password }}"
+
 # List of cluster users, already defined in OpenStack
 alaska_users:
   - name: "Chris Broekema"

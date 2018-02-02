@@ -1,0 +1,55 @@
+#
+# Copyright StackHPC, 2017
+#
+---
+- name: Configure instance monitoring
+  hosts: cluster
+  become: yes
+
+  roles:
+  - role: stackhpc.monasca-agent
+    keystone_url: "http://{{ controller_vip }}:5000/v3"
+    monasca_user: root
+    monasca_agent_user: "{{ monasca_agent_p3_username }}"
+    monasca_agent_password: "{{ monasca_agent_p3_password }}"
+    monasca_agent_project: "{{ project_name }}"
+    monasca_agent_version: 2.2.0
+    monasca_endpoint_type: public
+    monasca_project_domain_name: Default
+    monasca_user_domain_name: Default
+    monasca_region_name: RegionOne
+    monasca_service_type: monitoring
+    monasca_agent_custom_plugin_repos:
+    - "https://github.com/stackhpc/stackhpc-monasca-agent-plugins.git@master"
+
+  - role: stackhpc.monasca-rsyslog
+    monasca_rsyslog_api_auth:
+        auth_url: "http://{{ controller_vip }}:5000/v3"
+        project: "{{ project_name }}"
+        username: "{{ monasca_agent_p3_username }}"
+        password: "{{ monasca_agent_p3_password }}"
+    monasca_rsyslog_venv: "/opt/monasca-rsyslog"
+    monasca_rsyslog_api_endpoint: "http://{{ alaska_monitoring_server }}:5607/v3.0"
+
+- name: Configure dashboards
+  hosts: cluster_login
+  run_once: true
+  roles:
+  - role: stackhpc.grafana-conf
+    grafana_conf_organisation: "{{ project_name }}"
+    grafana_conf_grafana_admin_user: "{{ grafana_admin_username }}"
+    grafana_conf_grafana_admin_pass: "{{ grafana_admin_password }}"
+    grafana_conf_grafana_dashboard_repo:
+      repo: "https://github.com/stackhpc/grafana-reference-dashboards.git"
+      checkout_path: "{{ ansible_user_dir }}/grafana-dashboards"
+      version: "master"
+      relative_path: "/monasca/tenant"
+    grafana_conf_grafana_url: "http://{{ controller_vip }}:3000"
+    grafana_conf_grafana_datasources:
+      # TODO: Change to VIP when these are behind HAProxy
+      monasca_api:
+        port: 8082
+        host: "{{ alaska_monitoring_server }}"
+      monasca_log_api:
+        port: 5607
+        host: "{{ alaska_monitoring_server }}"
