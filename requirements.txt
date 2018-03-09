@@ -3,3 +3,4 @@ os-client-config
 shade
 python-barbicanclient
 python-keystoneclient
+python-heatclient
