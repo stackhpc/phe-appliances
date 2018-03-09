@@ -8,92 +8,11 @@ cluster_roles: []
 # for the cloud user for the next phase of deployment.
 cluster_keypair: rsa_keypair
 
-# Alaska environment configuration parameters
-# Config name of the OpenStack cloud to authenticate against
-alaska_cloud: alaska
-# Mount point for home directories (nb, /home will upset cloud user)
-alaska_homedir: /alaska
-alaska_softiron: 10.4.99.101
-
 # OpenStack fully qualified project name
-project_name: p3@default
-
-# Virtual IP address of the controller node
-controller_vip: 10.60.253.1
-
-# IP address from which the logging and monitoring server can be accessed
-alaska_monitoring_server: 10.60.253.3
-
-# OpenStack credentials for posting logs and metrics for the P3 project
-monasca_agent_p3_username: p3-monasca-agent
-monasca_agent_p3_password: "{{ vault_monasca_agent_password }}"
-
-# Local Grafana admin account for configuring Grafana
-grafana_admin_username: grafana-admin
-grafana_admin_password: "{{ vault_grafana_admin_password }}"
+project_name: StackHPC@default
 
 # List of cluster users, already defined in OpenStack
 alaska_users:
-  - name: "Chris Broekema"
-    user: chris
-    uid: 2001
-  - name: "Paul Browne"
-    user: paul
-    uid: 2002
-  - name: "Mark Goddard"
-    user: mark
-    uid: 2003
-  - name: "Vlad Stolyarov"
-    user: vlad
-    uid: 2004
-  - name: "John Taylor"
-    user: john
-    uid: 2005
   - name: "Stig Telfer"
     user: stig
-    uid: 2006
-  - name: "Ben Mort"
-    user: ben
-    uid: 2007
-  - name: "Fred Dulwich"
-    user: fred
-    uid: 2009
-  - name: "Alasdair King"
-    user: alasdair
-    uid: 2010
-  - name: "Verity Allan"
-    user: verity
-    uid: 2011
-  - name: "Nijin Thykkathu"
-    user: nijin
-    uid: 2012
-  - name: "James Kent"
-    user: james
-    uid: 2013
-  - name: "Tim Cornwell"
-    user: tim
-    uid: 2014
-  - name: "Piers Harding"
-    user: piers
-    uid: 2015
-  - name: "Arjen Tamerus"
-    user: arjen
-    uid: 2016
-  - name: "Bojan Nikolic"
-    user: bojan
-    uid: 2017
-  - name: "Brian"
-    user: brian
-    uid: 2018
-  - name: "Doug Szumski"
-    user: doug
-    uid: 2019
-  - name: "John Garbutt"
-    user: johng
-    uid: 2020
-  - name: "Mark Boulton"
-    user: markb
-    uid: 2021
-  - name: "Markus Dolensky"
-    user: markus
-    uid: 2022
+    uid: 2001

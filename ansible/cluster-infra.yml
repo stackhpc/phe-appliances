@@ -6,10 +6,14 @@
 
   roles:
     - role: stackhpc.cluster-infra
+      cluster_auth: "{{ openstack_auth }}"
+      cluster_auth_type: "{{ openstack_auth_type }}"
       cluster_name: "{{ cluster_name }}"
       cluster_params:
         cluster_prefix: "{{ cluster_name }}"
         cluster_keypair: "{{ cluster_keypair }}"
         cluster_groups: "{{ cluster_groups }}"
         cluster_net: "{{ cluster_net }}"
+        security_groups_set_flag: True
       cluster_roles: "{{ cluster_roles }}"
+      cluster_environment_nodenet: "{{ role_path }}/files/environments/nodenet-w-fip.yaml"
