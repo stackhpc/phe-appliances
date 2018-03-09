@@ -1,0 +1,16 @@
+---
+# Create network infrastructure for building the PHE model environment
+- name: Ensure OpenStack tenant network infrastructure exists
+  hosts: localhost
+  tags:
+    - networks
+  roles:
+    - role: stackhpc.os-networks
+      os_shade_install_epel: False
+      os_shade_install_package_dependencies: False
+      os_networks_venv: "{{ openstack_venv }}"
+      os_networks_auth_type: "{{ openstack_auth_type }}"
+      os_networks_auth: "{{ openstack_auth }}"
+      os_networks: "{{ phe_networks }}"
+      os_networks_routers: "{{ phe_routers }}"
+      os_networks_security_groups: "{{ phe_security_groups }}"
