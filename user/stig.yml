@@ -1,0 +1,6 @@
+---
+# This parameter should be set to the name of an RSA keypair you have
+# uplaoded to OpenStack.
+cluster_keypair: stig_tom2
+
+forticlient_pkg: "/home/stig.telfer/forticlient-sslvpn_4.4.2333-1_amd64.deb"

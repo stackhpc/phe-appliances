@@ -1,0 +1,107 @@
+---
+# Site-specific network configuration.
+cluster_net:
+  - net: "{{ phe_network_internal_name }}"
+    subnet: "{{ phe_network_internal_name }}"
+    security_groups: [ "{{ phe_secgroup_login_name }}" ]
+    floating_net: "{{ phe_network_external_name }}"
+
+
+# Inventory of networks in the phe project. Format is as required by the
+# stackhpc.os-networks role.
+phe_networks:
+  - "{{ phe_network_internal }}"
+  - "{{ phe_network_compute }}"
+
+# P3 external network name.
+phe_network_external_name: "external"
+
+# P3 internal network name.
+phe_network_internal_name: "internal"
+
+# P3 internal network.
+phe_network_internal:
+  name: "{{ phe_network_internal_name }}"
+  shared: False
+  # Subnet configuration.
+  subnets:
+    - "{{ phe_subnet_internal }}"
+
+# P3 internal subnet.
+phe_subnet_internal:
+  name: "{{ phe_network_internal_name }}"
+  cidr: "172.16.0.0/24"
+  gateway_ip: "172.16.0.1"
+  allocation_pool_start: "172.16.0.10"
+  allocation_pool_end: "172.16.0.99"
+
+# P3 compute network name.
+phe_network_compute_name: "compute"
+
+# P3 compute network.
+phe_network_compute:
+  name: "{{ phe_network_compute_name }}"
+  shared: False
+  # Subnet configuration.
+  subnets:
+    - "{{ phe_subnet_compute }}"
+
+# P3 compute subnet.
+phe_subnet_compute:
+  name: "{{ phe_network_compute_name }}"
+  cidr: "172.16.1.0/24"
+  gateway_ip: "172.16.1.1"
+  allocation_pool_start: "172.16.1.10"
+  allocation_pool_end: "172.16.1.99"
+
+
+############################################################
+# Routers between project networks
+
+phe_routers:
+  - "{{ phe_router_internal }}"
+
+phe_router_internal:
+  name: "{{ phe_network_internal_name }}-gw"
+  network: "{{ phe_network_external_name }}"
+  interfaces:
+    - "{{ phe_subnet_internal.name }}"
+
+
+############################################################
+# Security groups for project instances
+
+phe_security_groups:
+  - "{{ phe_secgroup_compute }}"
+  - "{{ phe_secgroup_login }}"
+
+phe_secgroup_compute_name: "appliance-compute"
+
+phe_secgroup_compute:
+  name: "{{ phe_secgroup_compute_name }}"
+  description: "Compute node security rules"
+  #project: "StackHPC"
+  rules:
+  - direction: "ingress"
+    ethertype: "IPv4"
+    port_range_min: 22
+    port_range_max: 22
+    protocol: "tcp"
+  - direction: "ingress"
+    ethertype: "IPv4"
+    protocol: "icmp"
+
+phe_secgroup_login_name: "appliance-login"
+phe_secgroup_login:
+  name: "{{ phe_secgroup_login_name }}"
+  description: "Login node security rules"
+  #project: "StackHPC"
+  rules:
+  - direction: "ingress"
+    ethertype: "IPv4"
+    port_range_min: 22
+    port_range_max: 22
+    protocol: "tcp"
+  - direction: "ingress"
+    ethertype: "IPv4"
+    protocol: "icmp"

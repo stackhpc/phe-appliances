@@ -1,0 +1,36 @@
+---
+# This name is used for the Heat stack and as a prefix for the
+# cluster node hostnames.
+cluster_name: infra
+
+# Multi-node application topology.  In this case we have a SLURM
+# deployment formed from a login/controller node and a number of
+# batch compute nodes.
+cluster_groups:
+  - "{{ infra_net }}"
+  - "{{ infra_data }}"
+  - "{{ infra_user }}"
+
+infra_net:
+  name: "net"
+  flavor: "m1.small"
+  image: "CentOS-7-1708"
+  user: "centos"
+  num_nodes: 1
+
+infra_data:
+  name: "data"
+  flavor: "m1.small"
+  image: "CentOS-7-1708"
+  user: "centos"
+  num_nodes: 1
+
+infra_user:
+  name: "user"
+  flavor: "m1.small"
+  image: "CentOS-7-1708"
+  user: "centos"
+  num_nodes: 1
+
+
+cluster_roles: []
