@@ -7,6 +7,8 @@ cluster_net:
     floating_net: "{{ phe_network_external_name }}"
 
 
+phe_project_name: "stackhpc"
+
 # Inventory of networks in the phe project. Format is as required by the
 # stackhpc.os-networks role.
 phe_networks:
@@ -32,6 +34,8 @@ phe_subnet_internal:
   name: "{{ phe_network_internal_name }}"
   cidr: "172.16.0.0/24"
   gateway_ip: "172.16.0.1"
+  dns_nameservers:
+  - "158.119.147.185"
   allocation_pool_start: "172.16.0.10"
   allocation_pool_end: "172.16.0.99"
 
@@ -51,6 +55,8 @@ phe_subnet_compute:
   name: "{{ phe_network_compute_name }}"
   cidr: "172.16.1.0/24"
   gateway_ip: "172.16.1.1"
+  dns_nameservers:
+  - "158.119.147.185"
   allocation_pool_start: "172.16.1.10"
   allocation_pool_end: "172.16.1.99"
 
@@ -62,7 +68,7 @@ phe_routers:
   - "{{ phe_router_internal }}"
 
 phe_router_internal:
-  name: "{{ phe_network_internal_name }}-gw"
+  name: "{{ phe_project_name }}-gw"
   network: "{{ phe_network_external_name }}"
   interfaces:
     - "{{ phe_subnet_internal.name }}"

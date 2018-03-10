@@ -1,0 +1,31 @@
+---
+- name: Extract Forticlient package name
+  set_fact:
+    forticlient_pkg_remote: "/tmp/{{ forticlient_pkg | basename }}"
+
+- name: Transfer Forticlient package to system
+  copy:
+    src: "{{ forticlient_pkg }}"
+    dest: "{{ forticlient_pkg_remote }}"
+
+- name: Install Forticlient package
+  package:
+    name: "{{ forticlient_pkg_remote }}"
+    state: present
+  become: True
+
+- name: Remove the Forticlient package file
+  file:
+    path: "{{ forticlient_pkg_remote }}"
+    state: absent
+
+- name: Install the Fortigate VPN config
+  template:
+    src: config.j2
+    dest: "/etc/openfortivpn/config"
+    owner: root
+    group: root
+    mode: 0600
+  become: true
+  
+    

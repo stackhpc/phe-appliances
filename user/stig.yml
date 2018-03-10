@@ -3,4 +3,4 @@
 # uplaoded to OpenStack.
 cluster_keypair: stig_tom2
 
-forticlient_pkg: "/home/stig.telfer/forticlient-sslvpn_4.4.2333-1_amd64.deb"
+forticlient_pkg: "/home/stig.telfer/rpmbuild/RPMS/x86_64/openfortivpn-1.6.0-2.el7.centos.x86_64.rpm"

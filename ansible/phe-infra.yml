@@ -1,0 +1,23 @@
+---
+# Base configuration for all servers to enable net access
+- hosts: cluster
+  tasks:
+  - name: Enable HTTP access via proxy
+    lineinfile:
+      path: "/etc/environment"
+      create: yes
+      mode: 0644
+      owner: root
+      group: root
+      line: "{{ item }}"
+    become: True
+    with_items:
+    - "export http_proxy={{ phe_http_proxy }}"
+    - "export https_proxy={{ phe_http_proxy }}"
+
+# Configure the Fortigate VPN (as best we can)
+- hosts: infra_net
+  roles:
+    - role: fortigate_vpn
+      fortigate_pkg: "{{ fortigate_pkg }}"
+      fortigate_cfg: "{{ hpcdirect_fortigate }}"
