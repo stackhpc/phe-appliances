@@ -27,5 +27,20 @@
     group: root
     mode: 0600
   become: true
-  
-    
+
+- name: Start the VPN tunnel
+  shell: "nohup /bin/openfortivpn --use-syslog &"
+  args: 
+    chdir: "{{ fortigate_vpn_run_dir }}"
+    creates: "/sys/class/net/{{ fortigate_vpn_net_dev }}"
+  become: true
+
+- name: Wait for link establishment
+  wait_for:
+    path: "/sys/class/net/{{ fortigate_vpn_net_dev }}"
+    timeout: 60
+
+- name: Enable IP forwarding between interfaces
+  sysctl:
+    name: "net.ipv4.ip_forward"
+    value: 1

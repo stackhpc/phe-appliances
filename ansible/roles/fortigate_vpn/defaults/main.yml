@@ -1,0 +1,3 @@
+---
+fortigate_vpn_run_dir: "/var/run"
+fortigate_vpn_net_dev: "ppp0"
