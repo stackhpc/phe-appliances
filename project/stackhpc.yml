@@ -3,7 +3,7 @@
 cluster_net:
   - net: "{{ phe_network_internal_name }}"
     subnet: "{{ phe_network_internal_name }}"
-    security_groups: [ "{{ phe_secgroup_login_name }}" ]
+    security_groups: [ "{{ phe_secgroup_openstack_name }}" ]
     floating_net: "{{ phe_network_external_name }}"
 
 
@@ -80,6 +80,7 @@ phe_router_internal:
 phe_security_groups:
   - "{{ phe_secgroup_compute }}"
   - "{{ phe_secgroup_login }}"
+  - "{{ phe_secgroup_openstack }}"
 
 phe_secgroup_compute_name: "appliance-compute"
 
@@ -111,3 +112,66 @@ phe_secgroup_login:
   - direction: "ingress"
     ethertype: "IPv4"
     protocol: "icmp"
+
+phe_secgroup_openstack_name: "appliance-openstack"
+phe_secgroup_openstack:
+  name: "{{ phe_secgroup_openstack_name }}"
+  description: "OpenStack node security rules"
+  #project: "StackHPC"
+  rules:
+  - direction: "ingress"
+    ethertype: "IPv4"
+    port_range_min: 22
+    port_range_max: 22
+    protocol: "tcp"
+  - direction: "ingress"
+    ethertype: "IPv4"
+    protocol: "icmp"
+  # Barbican key manager
+  - direction: "ingress"
+    ethertype: "IPv4"
+    port_range_min: 9311
+    port_range_max: 9311
+    protocol: "tcp"
+  # Nova compute
+  - direction: "ingress"
+    ethertype: "IPv4"
+    port_range_min: 8774
+    port_range_max: 8774
+    protocol: "tcp"
+  # Neutron networking
+  - direction: "ingress"
+    ethertype: "IPv4"
+    port_range_min: 9696
+    port_range_max: 9696
+    protocol: "tcp"
+  # Heat orchestration
+  - direction: "ingress"
+    ethertype: "IPv4"
+    port_range_min: 8004
+    port_range_max: 8004
+    protocol: "tcp"
+  # Glance image
+  - direction: "ingress"
+    ethertype: "IPv4"
+    port_range_min: 9292
+    port_range_max: 9292
+    protocol: "tcp"
+  # Heat (cloud-formation)
+  - direction: "ingress"
+    ethertype: "IPv4"
+    port_range_min: 8000
+    port_range_max: 8000
+    protocol: "tcp"
+  # Keystone identity
+  - direction: "ingress"
+    ethertype: "IPv4"
+    port_range_min: 5000
+    port_range_max: 5000
+    protocol: "tcp"
+  # Nova placement
+  - direction: "ingress"
+    ethertype: "IPv4"
+    port_range_min: 8780
+    port_range_max: 8780
+    protocol: "tcp"

@@ -44,3 +44,13 @@
   sysctl:
     name: "net.ipv4.ip_forward"
     value: 1
+  become: true
+
+- name: Enable NAT over the firewall tunnel
+  iptables:
+    table: nat
+    chain: POSTROUTING
+    out_interface: "{{ fortigate_vpn_net_dev }}"
+    jump: MASQUERADE
+    state: present
+  become: true

@@ -9,8 +9,9 @@
   
 # Apply generic setup configuration that is universally useful
 - hosts: cluster
-  remote_user: centos
-  become: yes
   roles:
+    - role: stackhpc.os-config
+      os_config_content: "{{ phe_cloud_config }}"
+
     - role: cluster_setup
       monitor_secret: "{{ hostvars['localhost']['alaska_auth_p3_monitor'] }}"

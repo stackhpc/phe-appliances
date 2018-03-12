@@ -1,12 +1,13 @@
 ---
 #- src: stackhpc.cluster-infra
-- src: https://github.com/stackhpc/ansible-role-cluster-infra
-  version: newton-backport
-  name: stackhpc.cluster-infra
+#- src: https://github.com/stackhpc/ansible-role-cluster-infra
+#  version: newton-backport
+#  name: stackhpc.cluster-infra
 - src: https://github.com/stackhpc/ansible-users
   version: append
   name: singleplatform-eng.users
-- src: stackhpc.os-networks
-- src: stackhpc.monasca-agent
-- src: stackhpc.monasca-rsyslog
-- src: stackhpc.grafana-conf
+- src: stackhpc.os-config
+#- src: stackhpc.os-networks
+#- src: stackhpc.monasca-agent
+#- src: stackhpc.monasca-rsyslog
+#- src: stackhpc.grafana-conf

@@ -21,3 +21,41 @@
     - role: fortigate_vpn
       fortigate_pkg: "{{ fortigate_pkg }}"
       fortigate_cfg: "{{ hpcdirect_fortigate }}"
+
+- hosts: infra_user
+  tasks:
+    - name: Ensure RDO repo is present
+      package:
+        name: "centos-release-openstack-pike"
+        state: present
+      become: true
+
+    - name: Install OpenStack client packages 
+      package:
+        name:
+          - "python-openstackclient"
+          - "python-heatclient"
+          - "python-barbicanclient"
+        state: present
+      become: true
+
+    - name: Extract the infra_net IP
+      set_fact:
+        gw_ip: "{{ hostvars['infra-net-0']['ansible_default_ipv4']['address'] }}"
+
+    - name: Read routing table
+      command: "/usr/sbin/ip route list"
+      register: route_table
+
+    - name: Configure routes for VPN
+      command: "ip route add {{ item }} via {{ gw_ip }}"
+      become: true
+      when: route_table.stdout.find(item) == -1
+      with_items:
+        - "172.27.0.0/16"
+        - "10.109.0.0/16"
+
+  roles:
+    - role: stackhpc.os-config
+      os_config_content: "{{ cloud_config }}"
+ 
