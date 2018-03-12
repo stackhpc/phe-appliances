@@ -15,6 +15,11 @@
     - "export http_proxy={{ phe_http_proxy }}"
     - "export https_proxy={{ phe_http_proxy }}"
 
+  roles:
+    - role: cluster_hosts
+    - role: resmo.ntp
+      become: true
+
 # Configure the Fortigate VPN (as best we can)
 - hosts: infra_net
   roles:
@@ -23,19 +28,29 @@
       fortigate_cfg: "{{ hpcdirect_fortigate }}"
 
 - hosts: infra_user
-  tasks:
+  pre_tasks:
+    - name: Ensure the PHE home directory exists
+      file:
+        path: "{{ phe_home }}"
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+      become: true
+
     - name: Ensure RDO repo is present
       package:
         name: "centos-release-openstack-pike"
         state: present
       become: true
 
-    - name: Install OpenStack client packages 
+    - name: Install OpenStack client packages and dependencies
       package:
         name:
           - "python-openstackclient"
           - "python-heatclient"
           - "python-barbicanclient"
+          - "python-virtualenv"
         state: present
       become: true
 
@@ -56,6 +71,20 @@
         - "10.109.0.0/16"
 
   roles:
+    - role: singleplatform-eng.users
+      become: true
+      users: "{{ phe_users }}"
+      groups_to_create: "{{ phe_groups }}"
+
     - role: stackhpc.os-config
       os_config_content: "{{ cloud_config }}"
  
+  post_tasks:
+    - name: Assign cloudadm group access to clouds.yaml
+      file:
+        path: "/etc/openstack/clouds.yaml"
+        owner: "root"
+        group: "cloudadm"
+        mode: 0640
+        state: file
+      become: true
