@@ -5,7 +5,7 @@ phe_users:
   - username: stig
     name: Stig Telfer
     groups:
-      - wheel
+      - sudo
       - cloudadm
     uid: 1001
     home: "{{phe_home}}/stig"
@@ -15,18 +15,19 @@ phe_users:
   - username: francesco
     name: Francesco Giannoccaro
     groups:
-      - wheel
+      - sudo
       - cloudadm
     uid: 1002
     home: "{{phe_home}}/francesco"
     profile: |
       alias ll='ls -lah'
     update_password: 'on_create'
-    ssh_key: []
+    ssh_key:
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3Y5lYlZLxQUW5+HIYBHz5S5K/imidltW5yfaTAAg91/RGZoShSzmGj70AbdPkdiNw4mYSZZ6IecXal3JKhjT+4YzIVL+ICmYodjEtUWyCJK4jlg64WNUrh5/IwdsqZOzge8l4CSX8iDiGs43B+12e39X5NHX6lI1Ud0uQm7LAq7BsPdw0fLgtHb1mglwSDUh+5ebo9rN0Eu1SX1fiH3EGVr0dCadYhxh7XyAQYGwigM+FBiJqKwMw+LlLtzAHrfUtLAMbrFCd7aTWb1hzfXgkr9F/S8vEsm+JReV0458QST7Ey4j7BYLt6eMgg4ncuc+BUm9N7DHuO5uuSBIfI3Np francesco@fgx230"
   - username: tom
     name: Thomas Stewart
     groups:
-      - wheel
+      - sudo
       - cloudadm
     uid: 1003
     home: "{{phe_home}}/tom"
@@ -35,10 +36,19 @@ phe_users:
   - username: hemanth
     name: Hemanth Manupati
     groups:
-      - wheel
+      - sudo
       - cloudadm
     uid: 1004
     home: "{{phe_home}}/hemanth"
+    update_password: 'on_create'
+    ssh_key: []
+  - username: sam
+    name: Sam Morris
+    groups:
+      - sudo
+      - cloudadm
+    uid: 1005
+    home: "{{phe_home}}/sam"
     update_password: 'on_create'
     ssh_key: []
 
