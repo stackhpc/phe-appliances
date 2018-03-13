@@ -1,0 +1,47 @@
+---
+phe_home: "/phe_home"
+
+phe_users:
+  - username: stig
+    name: Stig Telfer
+    groups:
+      - wheel
+      - cloudadm
+    uid: 1001
+    home: "{{phe_home}}/stig"
+    update_password: 'on_create'
+    ssh_key:
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3CTl02TllPmHOqFevPeKnok8piYlcxDHaKg+Xu1ftXD5AHe7cdjgDZESr4moQaYHlzxNzL7gVWuXVKy/qxddsR6KUyFLH0Ir6l2e8zszKJ5G8KkCBgfUhba1mCVADHOjrwgZrgmBRfsFDL5LNM3xmkesLB9pefZwtuH/7zIwQmMLUI0kyVEmwPbuRT2SduF9GbIeVEMQc4EgUVjsGClessILncjg/uxLakJMFdTh600rtoGLYyMTzebY3hEDif8HK/G/RIzSIgbpLkzBwslRI4VB6g1Z2T7GnAkIONx9knQC6UfuKaBp4Rx9hX9a2p+MgJkO3ht4mV8x45+mR3LWh stig.telfer@tom2"
+  - username: francesco
+    name: Francesco Giannoccaro
+    groups:
+      - wheel
+      - cloudadm
+    uid: 1002
+    home: "{{phe_home}}/francesco"
+    profile: |
+      alias ll='ls -lah'
+    update_password: 'on_create'
+    ssh_key: []
+  - username: tom
+    name: Thomas Stewart
+    groups:
+      - wheel
+      - cloudadm
+    uid: 1003
+    home: "{{phe_home}}/tom"
+    update_password: 'on_create'
+    ssh_key: []
+  - username: hemanth
+    name: Hemanth Manupati
+    groups:
+      - wheel
+      - cloudadm
+    uid: 1004
+    home: "{{phe_home}}/hemanth"
+    update_password: 'on_create'
+    ssh_key: []
+
+phe_groups:
+  - name: cloudadm
+    gid: 10000

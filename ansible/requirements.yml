@@ -6,6 +6,7 @@
 - src: https://github.com/stackhpc/ansible-users
   version: append
   name: singleplatform-eng.users
+- src: resmo.ntp
 - src: stackhpc.os-config
 - src: stackhpc.os-networks
 - src: stackhpc.monasca-agent

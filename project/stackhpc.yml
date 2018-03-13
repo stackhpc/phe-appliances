@@ -175,3 +175,34 @@ phe_secgroup_openstack:
     port_range_min: 8780
     port_range_max: 8780
     protocol: "tcp"
+  # RPC portmapper
+  - direction: "ingress"
+    ethertype: "IPv4"
+    port_range_min: 111
+    port_range_max: 111
+    protocol: "tcp"
+  # NFS services
+  - direction: "ingress"
+    ethertype: "IPv4"
+    port_range_min: 2049
+    port_range_max: 2049
+    protocol: "tcp"
+  # NFS services
+  - direction: "ingress"
+    ethertype: "IPv4"
+    port_range_min: 20048
+    port_range_max: 20048
+    protocol: "tcp"
+  # NFS services
+  - direction: "ingress"
+    ethertype: "IPv4"
+    port_range_min: 44112
+    port_range_max: 44112
+    protocol: "tcp"
+  # NFS services
+  - direction: "ingress"
+    ethertype: "IPv4"
+    port_range_min: 49619
+    port_range_max: 49619
+    protocol: "tcp"
+
