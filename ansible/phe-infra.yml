@@ -12,8 +12,30 @@
       line: "{{ item }}"
     become: True
     with_items:
-    - "export http_proxy={{ phe_http_proxy }}"
-    - "export https_proxy={{ phe_http_proxy }}"
+    - "http_proxy={{ phe_http_proxy }}"
+    - "https_proxy={{ phe_http_proxy }}"
+
+  - name: Add proxy settings as profile
+    copy:
+      dest: "/etc/profile.d/phe_proxy.sh"
+      mode: 0755
+      owner: root
+      group: root
+      content: |
+        export http_proxy={{ phe_http_proxy }}
+        export https_proxy={{ phe_http_proxy }}
+    become: True
+
+  - name: Add proxy settings as profile
+    copy:
+      dest: "/etc/sudoers.d/proxy"
+      mode: 0644
+      owner: root
+      group: root
+      content: |
+        Defaults env_keep += "http_proxy https_proxy"
+    become: True
+
 
   roles:
     - role: cluster_hosts
@@ -96,6 +118,7 @@
         name: "centos-release-openstack-pike"
         state: present
       become: true
+      when: ansible_os_family == "RedHat"
 
     - name: Install OpenStack client packages and dependencies
       package:
@@ -115,7 +138,8 @@
         gw_ip: "{{ hostvars['infra-net-0']['ansible_default_ipv4']['address'] }}"
 
     - name: Read routing table
-      command: "/usr/sbin/ip route list"
+      command: "ip route list"
+      become: True
       register: route_table
 
     - name: Configure routes for VPN

@@ -1,0 +1,6 @@
+---
+# This parameter should be set to the name of an RSA keypair you have
+# uplaoded to OpenStack.
+cluster_keypair: francesco
+
+forticlient_pkg: "/home/francesco/rpmbuild/RPMS/x86_64/openfortivpn-1.6.0-2.el7.centos.x86_64.rpm"

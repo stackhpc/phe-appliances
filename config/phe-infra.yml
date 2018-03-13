@@ -28,8 +28,8 @@ infra_data:
 infra_user:
   name: "user"
   flavor: "m1.small"
-  image: "CentOS-7-1708"
-  user: "centos"
+  image: "Debian-9.1.1-Stretch"
+  user: "debian"
   num_nodes: 1
 
 
