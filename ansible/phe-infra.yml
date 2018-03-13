@@ -1,7 +1,27 @@
 ---
+# Ensure the Root FS volume exists
+- hosts: openstack
+  tasks:
+    - name: Create a volume for NFS
+      os_volume:
+        auth_type: "{{ openstack_auth_type }}"
+        auth: "{{ openstack_auth }}"
+        state: present
+        size: 50
+        display_name: infra_home
+
+    - name: Attach to data server
+      os_server_volume:
+        auth_type: "{{ openstack_auth_type }}"
+        auth: "{{ openstack_auth }}"
+        state: present
+        server: "infra-data-0"
+        volume: "infra_home"
+        device: /dev/vdb
+
 # Base configuration for all servers to enable net access
 - hosts: cluster
-  tasks:
+  pre_tasks:
   - name: Enable HTTP access via proxy
     lineinfile:
       path: "/etc/environment"
@@ -36,11 +56,13 @@
         Defaults env_keep += "http_proxy https_proxy"
     become: True
 
-
   roles:
     - role: cluster_hosts
     - role: resmo.ntp
       become: true
+  environment:
+    http_proxy: "http://158.119.150.60:8080"
+    https_proxy: "http://158.119.150.60:8080"
 
 - hosts: infra_data
   tasks:
@@ -51,6 +73,9 @@
           - "nfs-utils"
         state: present
       become: true
+      environment:
+        http_proxy: "http://158.119.150.60:8080"
+        https_proxy: "http://158.119.150.60:8080"
 
     - set_fact:
         phe_home_export: "/srv{{ phe_home }}"
@@ -58,14 +83,41 @@
     - set_fact:
         phe_home_cidr: "{{ phe_home_net_mask | ipaddr('net') }}"
 
-    - name: Ensure the home diretctory export point is created
-      file:
-        path: "/srv{{phe_home}}"
-        state: directory
-        owner: root
-        group: root
-        mode: 0755
+    - name: Check the mount status of the volume block device
+      command: cat /proc/mounts
+      register: mount_data
+      
+    - set_fact:
+        volume_mounted: "{{ mount_data.stdout.find('/dev/vdb1') != -1 }}"
+    - debug:
+        var: volume_mounted
+        
+    - name: Prepare and mount volume
+      block:
+      - name: Partition volume device
+        parted:
+          device: /dev/vdb
+          number: 1
+          state: present
+      - name: Format partition
+        filesystem:
+          fstype: ext4
+          dev: /dev/vdb1
+      - name: Ensure the home directory export point is created
+        file:
+          path: "/srv{{phe_home}}"
+          state: directory
+          owner: root
+          group: root
+          mode: 0755
+      - name: Mount filesystem
+        mount:
+          path: "/srv{{phe_home}}"
+          src: "/dev/vdb1"
+          fstype: "ext4"
+          state: mounted
       become: true
+      when: not volume_mounted
 
     - name: Add the export rule
       lineinfile:
@@ -117,21 +169,61 @@
       package:
         name: "centos-release-openstack-pike"
         state: present
+      environment:
+        http_proxy: "http://158.119.150.60:8080"
+        https_proxy: "http://158.119.150.60:8080"
       become: true
       when: ansible_os_family == "RedHat"
 
     - name: Install OpenStack client packages and dependencies
       package:
         name:
+          - "vim"
+          - "git"
+          - "gcc"
+          - "python-dev"
+          - "python-virtualenv"
           - "python-openstackclient"
           - "python-heatclient"
           - "python-barbicanclient"
-          - "python-virtualenv"
-          - "git"
-          - "gcc"
-          - "python-devel"
         state: present
+      environment:
+        http_proxy: "http://158.119.150.60:8080"
+        https_proxy: "http://158.119.150.60:8080"
       become: true
+
+    - name: Write the PHE CRT (RedHat)
+      block:
+      - file:
+          dest: "/etc/pki/ca-trust/source/anchors"
+          state: directory
+          owner: root
+          group: root
+          mode: 0755
+          create: true
+      - copy:
+          dest: "/usr/local/share/ca-certificates/pheunix-ca.crt"
+          owner: root
+          group: root
+          mode: 0644
+          content: "{{ pheunix_ca_crt }}"
+        register: copy_crt
+      - command: update-ca-trust extract
+        when: copy_crt.changed
+      become: true
+      when: ansible_os_family == "RedHat"
+
+    - name: Write the PHE CRT (Debian)
+      block:
+      - copy:
+          dest: "/usr/local/share/ca-certificates/pheunix-ca.crt"
+          owner: root
+          group: root
+          mode: 0644
+          content: "{{ pheunix_ca_crt }}"
+      - command: update-ca-certificates
+      become: true
+      when: ansible_os_family == "Debian"
 
     - name: Extract the infra_net IP
       set_fact:
