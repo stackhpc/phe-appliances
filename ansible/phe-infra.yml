@@ -20,6 +20,49 @@
     - role: resmo.ntp
       become: true
 
+- hosts: infra_data
+  tasks:
+
+    - name: Ensure NFS server packages are installed
+      package:
+        name:
+          - "nfs-utils"
+        state: present
+      become: true
+
+    - set_fact:
+        phe_home_export: "/srv{{ phe_home }}"
+        phe_home_net_mask: "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.netmask }}"
+    - set_fact:
+        phe_home_cidr: "{{ phe_home_net_mask | ipaddr('net') }}"
+
+    - name: Ensure the home diretctory export point is created
+      file:
+        path: "/srv{{phe_home}}"
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+      become: true
+
+    - name: Add the export rule
+      lineinfile:
+        path: "/etc/exports"
+        regexp: "^{{phe_home_export}} .*"
+        line: "{{phe_home_export}} {{phe_home_cidr}}(rw,no_root_squash)"
+        create: true
+        owner: root
+        group: root
+        mode: 0750
+      become: true
+
+    - name: Ensure the NFS service is started
+      service:
+        name: nfs-server
+        enabled: yes
+        state: reloaded
+      become: true
+
 # Configure the Fortigate VPN (as best we can)
 - hosts: infra_net
   roles:
@@ -29,13 +72,23 @@
 
 - hosts: infra_user
   pre_tasks:
-    - name: Ensure the PHE home directory exists
+    - name: Ensure the PHE home directory mount point exists
       file:
         path: "{{ phe_home }}"
         state: directory
         owner: root
         group: root
         mode: 0755
+      become: true
+
+    - name: Ensure the PHE home directory is mounted
+      mount:
+        path: "{{ phe_home }}"
+        src: "{{hostvars['infra-data-0'].ansible_default_ipv4.address}}:{{hostvars['infra-data-0'].phe_home_export}}"
+        fstype: nfs
+        state: mounted
+        boot: yes
+        opts: "_netdev,noatime"
       become: true
 
     - name: Ensure RDO repo is present
@@ -51,6 +104,9 @@
           - "python-heatclient"
           - "python-barbicanclient"
           - "python-virtualenv"
+          - "git"
+          - "gcc"
+          - "python-devel"
         state: present
       become: true
 
