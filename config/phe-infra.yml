@@ -10,6 +10,8 @@ cluster_groups:
   - "{{ infra_net }}"
   - "{{ infra_data }}"
   - "{{ infra_user }}"
+  - "{{ infra_dib }}"
+  - "{{ infra_manageiq }}"
 
 infra_net:
   name: "net"
@@ -32,5 +34,31 @@ infra_user:
   user: "debian"
   num_nodes: 1
 
+infra_dib:
+  name: "dib"
+  flavor: "m1.small"
+  image: "CentOS-7-1708"
+  user: "centos"
+  num_nodes: 1
 
-cluster_roles: []
+infra_manageiq:
+  name: "manageiq"
+  flavor: "m1.small"
+  image: "CentOS-7-1708"
+  user: "centos"
+  num_nodes: 1
+
+cluster_roles: 
+  - name: "phe_user"
+    groups: 
+      - "{{ infra_user }}"
+      - "{{ infra_dib }}"
+  - name: "phe_data"
+    groups:
+      - "{{ infra_data }}"
+  - name: "phe_net"
+    groups:
+      - "{{ infra_net }}"
+  - name: "phe_manageiq"
+    groups:
+      - "{{ infra_manageiq }}"

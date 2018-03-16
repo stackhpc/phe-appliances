@@ -1,0 +1,17 @@
+---
+pkgdeps:
+  nfs_server:
+    - "nfs-utils"
+  nfs_client:
+    - "nfs-common"
+  openstack_repo: []
+  openstack_client:
+    - "python-dev"
+    - "python-virtualenv"
+    - "python-openstackclient"
+    - "python-heatclient"
+    - "python-barbicanclient"
+  user_env:
+    - "vim"
+    - "git"
+    - "gcc"

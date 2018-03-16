@@ -11,8 +11,3 @@ cluster_keypair: rsa_keypair
 # OpenStack fully qualified project name
 project_name: StackHPC@default
 
-# List of cluster users, already defined in OpenStack
-alaska_users:
-  - name: "Stig Telfer"
-    user: stig
-    uid: 2001

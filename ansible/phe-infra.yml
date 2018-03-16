@@ -21,6 +21,8 @@
 
 # Base configuration for all servers to enable net access
 - hosts: cluster
+  vars_files:
+    - "vars/{{ansible_os_family}}.yml"
   pre_tasks:
   - name: Enable HTTP access via proxy
     lineinfile:
@@ -69,8 +71,7 @@
 
     - name: Ensure NFS server packages are installed
       package:
-        name:
-          - "nfs-utils"
+        name: "{{ pkgdeps.nfs_server }}"
         state: present
       become: true
       environment:
@@ -155,9 +156,9 @@
         mode: 0755
       become: true
 
-    - name: Ensure the NFS packages are installed
+    - name: Ensure the NFS client packages are installed
       package:
-        name: nfs-common
+        name: "{{ pkgdeps.nfs_client }}"
         state: present
       environment:
         http_proxy: "http://158.119.150.60:8080"
@@ -174,27 +175,20 @@
         opts: "_netdev,noatime"
       become: true
 
-    - name: Ensure RDO repo is present
+    - name: Ensure OpenStack package repo is present
       package:
-        name: "centos-release-openstack-pike"
+        name: "{{ pkgdeps.openstack_repo }}"
         state: present
       environment:
         http_proxy: "http://158.119.150.60:8080"
         https_proxy: "http://158.119.150.60:8080"
       become: true
-      when: ansible_os_family == "RedHat"
 
     - name: Install OpenStack client packages and dependencies
       package:
         name:
-          - "vim"
-          - "git"
-          - "gcc"
-          - "python-dev"
-          - "python-virtualenv"
-          - "python-openstackclient"
-          - "python-heatclient"
-          - "python-barbicanclient"
+          - "{{ pkgdeps.user_env }}"
+          - "{{ pkgdeps.openstack_client }}"
         state: present
       environment:
         http_proxy: "http://158.119.150.60:8080"

@@ -1,0 +1,19 @@
+---
+pkgdeps:
+  nfs_server:
+    - "nfs-utils"
+  nfs_client: []
+  openstack_repo:
+    - "centos-release-openstack-pike"
+  openstack_client:
+    - "python-devel"
+    - "python-virtualenv"
+    - "python-openstackclient"
+    - "python-heatclient"
+    - "python-barbicanclient"
+  user_env:
+    - "vim"
+    - "git"
+    - "gcc"
+
+      when: ansible_os_family == "RedHat"
