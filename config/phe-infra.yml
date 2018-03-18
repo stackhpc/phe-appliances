@@ -1,7 +1,7 @@
 ---
 # This name is used for the Heat stack and as a prefix for the
 # cluster node hostnames.
-cluster_name: infra
+cluster_name: stig
 
 # Multi-node application topology.  In this case we have a SLURM
 # deployment formed from a login/controller node and a number of

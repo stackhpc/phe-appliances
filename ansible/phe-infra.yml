@@ -7,16 +7,16 @@
         auth_type: "{{ openstack_auth_type }}"
         auth: "{{ openstack_auth }}"
         state: present
-        size: 50
-        display_name: infra_home
+        size: 20
+        display_name: stig_home
 
     - name: Attach to data server
       os_server_volume:
         auth_type: "{{ openstack_auth_type }}"
         auth: "{{ openstack_auth }}"
         state: present
-        server: "infra-data-0"
-        volume: "infra_home"
+        server: "stig-data-0"
+        volume: "stig_home"
         device: /dev/vdb
 
 # Base configuration for all servers to enable net access
@@ -66,7 +66,9 @@
     http_proxy: "http://158.119.150.60:8080"
     https_proxy: "http://158.119.150.60:8080"
 
-- hosts: infra_data
+- hosts: cluster_phe_data
+  vars_files:
+    - "vars/{{ansible_os_family}}.yml"
   tasks:
 
     - name: Ensure NFS server packages are installed
@@ -139,13 +141,15 @@
       become: true
 
 # Configure the Fortigate VPN (as best we can)
-- hosts: infra_net
+- hosts: cluster_phe_net
   roles:
     - role: fortigate_vpn
       fortigate_pkg: "{{ fortigate_pkg }}"
       fortigate_cfg: "{{ hpcdirect_fortigate }}"
 
-- hosts: infra_user
+- hosts: cluster_phe_user
+  vars_files:
+    - "vars/{{ansible_os_family}}.yml"
   pre_tasks:
     - name: Ensure the PHE home directory mount point exists
       file:
@@ -168,7 +172,7 @@
     - name: Ensure the PHE home directory is mounted
       mount:
         path: "{{ phe_home }}"
-        src: "{{hostvars['infra-data-0'].ansible_default_ipv4.address}}:{{hostvars['infra-data-0'].phe_home_export}}"
+        src: "{{hostvars['stig-data-0'].ansible_default_ipv4.address}}:{{hostvars['stig-data-0'].phe_home_export}}"
         fstype: nfs
         state: mounted
         boot: yes
@@ -230,7 +234,7 @@
 
     - name: Extract the infra_net IP
       set_fact:
-        gw_ip: "{{ hostvars['infra-net-0']['ansible_default_ipv4']['address'] }}"
+        gw_ip: "{{ hostvars['stig-net-0']['ansible_default_ipv4']['address'] }}"
 
     - name: Read routing table
       command: "ip route list"
