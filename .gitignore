@@ -8,6 +8,15 @@ ansible/inventory_*
 
 # Ansible roles installed from Galaxy.
 ansible/roles/stackhpc.cluster-infra
+ansible/roles/resmo.ntp
+ansible/roles/singleplatform-eng.users
+ansible/roles/stackhpc.cluster-infra-galaxy
+ansible/roles/stackhpc.grafana-conf
+ansible/roles/stackhpc.monasca-agent
+ansible/roles/stackhpc.monasca-rsyslog
+ansible/roles/stackhpc.os-config
+ansible/roles/stackhpc.os-networks
+ansible/roles/stackhpc.os-shade
 
 # IntelliJ files
 .idea
