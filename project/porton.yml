@@ -1,0 +1,26 @@
+---
+# Site-specific network configuration.
+cluster_net:
+  - net: "{{ phe_network_internal_name }}"
+    subnet: "{{ phe_network_internal_name }}"
+    security_groups: 
+      - "{{ phe_secgroup_openstack_name }}"
+
+# Virtualised network environment: use floating IP
+cluster_nodenet_environment: "nodenet-1.yaml"
+
+#openstack_auth_cloud: "porton"
+
+phe_project_name: "stackhpc"
+
+# P3 external network name.
+phe_network_external_name: "external"
+
+# P3 internal network name.
+phe_network_internal_name: "internal"
+
+# P3 compute network name.
+phe_network_compute_name: "compute"
+
+# Security group to use
+phe_secgroup_openstack_name: "appliance-openstack"

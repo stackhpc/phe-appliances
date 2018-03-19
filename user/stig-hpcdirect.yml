@@ -1,0 +1,6 @@
+---
+# This parameter should be set to the name of an RSA keypair you have
+# uplaoded to OpenStack.
+#cluster_keypair: stig_phe
+cluster_keypair: stig_user
+

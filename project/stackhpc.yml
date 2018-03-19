@@ -6,6 +6,8 @@ cluster_net:
     security_groups: [ "{{ phe_secgroup_openstack_name }}" ]
     floating_net: "{{ phe_network_external_name }}"
 
+# Virtualised network environment: use floating IP
+cluster_nodenet_environment: "nodenet-w-fip.yaml"
 
 phe_project_name: "stackhpc"
 

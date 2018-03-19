@@ -1,0 +1,38 @@
+---
+# This name is used for the Heat stack and as a prefix for the
+# cluster node hostnames.
+cluster_name: openhpc-hpcdirect
+
+# Multi-node application topology.  In this case we have a SLURM
+# deployment formed from a login/controller node and a number of
+# batch compute nodes.
+cluster_groups:
+  - "{{ hpcdirect_gw }}"
+  - "{{ hpcdirect_compute }}"
+
+hpcdirect_gw:
+  name: "gw"
+  flavor: "compute-C"
+  image: "CentOS-7.4"
+  user: "centos"
+  num_nodes: 1
+  infra: "openhpc-hpcdirect"
+
+hpcdirect_compute:
+  name: "compute"
+  flavor: "compute-C"
+  image: "CentOS-7.4-OpenHPC"
+  user: "centos"
+  num_nodes: 3
+  infra: "openhpc-hpcdirect"
+
+# Node group assignments for cluster roles.
+# These group assignments are appended to the cluster inventory file.
+# The names of these roles are cross-referenced to groups referred to
+# in playbooks in the ansible/ directory.
+cluster_roles:
+  - name: "vpn"
+    groups: [ "{{ hpcdirect_gw }}" ]
+  - name: "batch"
+    groups: [ "{{ hpcdirect_compute }}" ]
+
