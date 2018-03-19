@@ -5,7 +5,7 @@ phe_users:
   - username: stig
     name: Stig Telfer
     groups:
-      - sudo
+      - "{{ system_sudo_group }}"
       - cloudadm
     uid: 1001
     home: "{{phe_home}}/stig"
@@ -15,7 +15,7 @@ phe_users:
   - username: francesco
     name: Francesco Giannoccaro
     groups:
-      - sudo
+      - "{{ system_sudo_group }}"
       - cloudadm
     uid: 1002
     home: "{{phe_home}}/francesco"
@@ -27,7 +27,7 @@ phe_users:
   - username: tom
     name: Thomas Stewart
     groups:
-      - sudo
+      - "{{ system_sudo_group }}"
       - cloudadm
     uid: 1003
     home: "{{phe_home}}/tom"
@@ -36,7 +36,7 @@ phe_users:
   - username: hemanth
     name: Hemanth Manupati
     groups:
-      - sudo
+      - "{{ system_sudo_group }}"
       - cloudadm
     uid: 1004
     home: "{{phe_home}}/hemanth"
@@ -45,7 +45,7 @@ phe_users:
   - username: sam
     name: Sam Morris
     groups:
-      - sudo
+      - "{{ system_sudo_group }}"
       - cloudadm
     uid: 1005
     home: "{{phe_home}}/sam"
