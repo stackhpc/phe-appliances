@@ -63,8 +63,8 @@
     - role: resmo.ntp
       become: true
   environment:
-    http_proxy: "http://158.119.150.60:8080"
-    https_proxy: "http://158.119.150.60:8080"
+    http_proxy: "{{ phe_http_proxy }}"
+    https_proxy: "{{ phe_http_proxy }}"
 
 - hosts: cluster_phe_data
   vars_files:
@@ -77,8 +77,8 @@
         state: present
       become: true
       environment:
-        http_proxy: "http://158.119.150.60:8080"
-        https_proxy: "http://158.119.150.60:8080"
+        http_proxy: "{{ phe_http_proxy }}"
+        https_proxy: "{{ phe_http_proxy }}"
 
     - set_fact:
         phe_home_export: "/srv{{ phe_home }}"
@@ -165,8 +165,8 @@
         name: "{{ pkgdeps.nfs_client }}"
         state: present
       environment:
-        http_proxy: "http://158.119.150.60:8080"
-        https_proxy: "http://158.119.150.60:8080"
+        http_proxy: "{{ phe_http_proxy }}"
+        https_proxy: "{{ phe_http_proxy }}"
       become: true
 
     - name: Ensure the PHE home directory is mounted
@@ -184,53 +184,44 @@
         name: "{{ pkgdeps.openstack_repo }}"
         state: present
       environment:
-        http_proxy: "http://158.119.150.60:8080"
-        https_proxy: "http://158.119.150.60:8080"
+        http_proxy: "{{ phe_http_proxy }}"
+        https_proxy: "{{ phe_http_proxy }}"
       become: true
 
     - name: Install OpenStack client packages and dependencies
       package:
-        name:
-          - "{{ pkgdeps.user_env }}"
-          - "{{ pkgdeps.openstack_client }}"
+        name: "{{ pkgdeps.user_env | union(pkgdeps.openstack_client) }}"
         state: present
       environment:
-        http_proxy: "http://158.119.150.60:8080"
-        https_proxy: "http://158.119.150.60:8080"
+        http_proxy: "{{ phe_http_proxy }}"
+        https_proxy: "{{ phe_http_proxy }}"
       become: true
 
-    - name: Write the PHE CRT (RedHat)
+    - name: Write the PHE CRT
       block:
       - file:
-          dest: "/etc/pki/ca-trust/source/anchors"
+          dest: "{{ ca_cert_path }}"
           state: directory
           owner: root
           group: root
           mode: 0755
-          create: true
       - copy:
-          dest: "/usr/local/share/ca-certificates/pheunix-ca.crt"
+          dest: "{{ ca_cert_path }}/pheunix-ca.crt"
           owner: root
           group: root
           mode: 0644
           content: "{{ pheunix_ca_crt }}"
         register: copy_crt
-      - command: update-ca-trust extract
-        when: copy_crt.changed
-      become: true
-      when: ansible_os_family == "RedHat"
-
-    - name: Write the PHE CRT (Debian)
-      block:
-      - copy:
-          dest: "/usr/local/share/ca-certificates/pheunix-ca.crt"
+      - file:
+          src: "{{ ca_cert_path }}/pheunix-ca.crt"
+          dest: "/etc/ssl/pheunix-ca.crt"
           owner: root
           group: root
           mode: 0644
-          content: "{{ pheunix_ca_crt }}"
-      - command: update-ca-certificates
+          state: link
+      - command: "{{ ca_cert_cmd }}"
+        when: copy_crt.changed
       become: true
-      when: ansible_os_family == "Debian"
 
     - name: Extract the infra_net IP
       set_fact:
