@@ -15,3 +15,9 @@ pkgdeps:
     - "vim"
     - "git"
     - "gcc"
+
+ca_cert_path: "/etc/pki/ca-trust/source/anchors"
+ca_cert_cmd: "update-ca-trust extract"
+
+# POSIX User groups
+system_sudo_group: "wheel"

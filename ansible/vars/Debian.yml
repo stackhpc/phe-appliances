@@ -15,3 +15,11 @@ pkgdeps:
     - "vim"
     - "git"
     - "gcc"
+
+# Distribution-specific paths and commands for 
+# certificate installation
+ca_cert_path: "/usr/local/share/ca-certificates"
+ca_cert_cmd: "update-ca-certificates"
+
+# POSIX User groups
+system_sudo_group: "sudo"
