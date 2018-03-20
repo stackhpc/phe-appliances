@@ -213,3 +213,9 @@ phe_secgroup_openstack:
     port_range_min: 20000
     port_range_max: 65535
     protocol: "udp"
+  # Slurm controller daemon
+  - direction: "ingress"
+    ethertype: "IPv4"
+    port_range_min: 6817
+    port_range_max: 6818
+    protocol: "tcp"
