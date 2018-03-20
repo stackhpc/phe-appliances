@@ -19,4 +19,4 @@
         # Specific to the newton-backports branch
         security_groups_set_flag: "{{ cluster_net[0].security_groups is defined }}"
       cluster_roles: "{{ cluster_roles }}"
-      cluster_nodenet: "{{ role_path }}/files/environments/{{ cluster_nodenet_environment | default('nodenet-1.yaml') }}"
+      cluster_environment_nodenet: "{{ role_path }}/files/environments/{{ cluster_nodenet_environment | default('nodenet-1.yaml') }}"

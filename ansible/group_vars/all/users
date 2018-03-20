@@ -41,7 +41,8 @@ phe_users:
     uid: 1004
     home: "{{phe_home}}/hemanth"
     update_password: 'on_create'
-    ssh_key: []
+    ssh_key: 
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCiYYCic+rLMuB+Fj8JD5pj8geR8XZOlhHpYPYQqvU6cP3yPn3R9Cf0wqoRwhLNAYNilrb4uE7iJnMx4e2Y8f3lzf3jIGgqDgGv0AG49gDPhPy+X8U0gbjgDEB/QJtKgfLB1W63qwSk6+zclHu7dL+hM7SgP+JrDPwxqSGJbUZz6L4BE20G396IOS/0nUD66bQc0N+Ei3U+NFqb2qKFLbrdUKU9cJCQXjUGU/U419AZLSmi3QdawptnVB9BlZ0Wj8T/EZ+bFJg3RtVVr+s8gSyqBlAHogrFZ/f1f9NVCneFf5hHbe5aEEvc+kLInvETsBUYWLB7T2PDT+uH70xcIxF5 hemanth@nbcol1039"
   - username: sam
     name: Sam Morris
     groups:
