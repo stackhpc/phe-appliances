@@ -1,0 +1,42 @@
+---
+# Site-specific network configuration.
+cluster_net:
+  - net: "{{ hpcdirect_network_provider_name }}"
+    subnet: "{{ hpcdirect_network_provider_name }}"
+
+# Virtualised network environment: use floating IP
+cluster_nodenet: "nodenet-1.yaml"
+
+openstack_auth_cloud: "hpcdirect"
+
+hpcdirect_project_name: "public-health-england"
+
+# Inventory of networks in the hpcDIRECT project. Format is as required by the
+# stackhpc.os-networks role.
+hpcdirect_networks:
+  - "{{ hpcdirect_network_provider }}"
+
+# P3 external network name.
+hpcdirect_network_external_name: "external"
+
+# P3 provider network name.
+hpcdirect_network_provider_name: "phe-provider"
+
+# P3 provider network.
+hpcdirect_network_provider:
+  name: "{{ hpcdirect_network_provider_name }}"
+  shared: False
+  # Subnet configuration.
+  subnets:
+    - "{{ hpcdirect_subnet_provider }}"
+
+# P3 provider subnet.
+hpcdirect_subnet_provider:
+  name: "{{ hpcdirect_network_provider_name }}"
+  cidr: "172.27.0.0/16"
+  gateway_ip: "172.27.0.1"
+  dns_nameservers:
+  - "185.45.77.14"
+  - "185.45.77.15"
+  allocation_pool_start: "172.27.1.1"
+  allocation_pool_end: "172.27.1.255"

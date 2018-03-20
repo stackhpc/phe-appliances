@@ -1,22 +1,53 @@
 ---
-- include: setup.yml
-- include: ceph-client.yml
-- include: users.yml
+#- include: setup.yml
+#- include: ceph-client.yml
+#- include: users.yml
+
+- hosts: cluster_porton
+  become: yes 
+  roles:
+    - role: phe_proxy
+
+- hosts: cluster
+  become: yes 
+  roles:
+    - role: cluster_setup
+    - role: resmo.ntp
+
+- hosts: cluster
+  become: yes 
+  tasks:
+  - name: Install OpenHPC repo
+    package:
+      name: https://github.com/openhpc/ohpc/releases/download/v1.3.GA/ohpc-release-1.3-1.el7.x86_64.rpm
+      state: present
+  - name: Install OpenHPC packages
+    package:
+      name: 
+        - "@ohpc-base"
+        - "@ohpc-runtimes-gnu"
+      state: latest
+
+  - name: Ensure installed OpenHPC packages are the latest
+    yum:
+      enablerepo: "OpenHPC,OpenHPC-updates"
+      name: '*'
+      state: latest
+
 
 - hosts: cluster_login
-  remote_user: centos
   become: yes
   roles:
     - role: openhpc_control
 
 - hosts: cluster_batch
-  remote_user: centos
   become: yes
   roles:
     - role: openhpc_compute
 
-- hosts: cluster
-  remote_user: centos
+- hosts: 
+    - cluster_login
+    - cluster_batch
   become: yes
   roles:
     - role: openhpc_runtime

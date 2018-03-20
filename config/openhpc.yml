@@ -3,56 +3,10 @@
 # cluster node hostnames.
 cluster_name: openhpc
 
-# This parameter should be set to the name of an RSA keypair you have
-# uplaoded to OpenStack.
-cluster_keypair: ilab_sclt100
-
-# Site-specific network configuration.
-cluster_net:
-  - { net: "ilab", subnet: "ilab" }
-
-# Multi-node application topology.  In this case we have a SLURM
-# deployment formed from a login/controller node and a number of
-# batch compute nodes.
-cluster_groups:
-  - "{{ slurm_login }}"
-  - "{{ slurm_compute }}"
-
-slurm_login:
-  name: "login"
-<<<<<<< Updated upstream
-  flavor: "compute-B"
-=======
-  flavor: "compute-A"
->>>>>>> Stashed changes
-  image: "CentOS7.4-OpenHPC"
-  num_nodes: 1
-
-slurm_compute:
-  name: "compute"
-  flavor: "compute-A"
-  image: "CentOS7.4-OpenHPC"
-<<<<<<< Updated upstream
-  num_nodes: 2
-=======
-  num_nodes: 4
->>>>>>> Stashed changes
-
-# Node group assignments for cluster roles.
-# These group assignments are appended to the cluster inventory file.
-# The names of these roles are cross-referenced to groups referred to
-# in playbooks in the ansible/ directory.
-cluster_roles:
-  - name: "ceph_client"
-    groups: "{{ cluster_groups }}"
-  - name: "login"
-    groups: [ "{{ slurm_login }}" ]
-  - name: "batch"
-    groups: [ "{{ slurm_compute }}" ]
-
 # Define a list of SLURM partitions to create.
 openhpc_slurm_partitions: 
-  - "{{ slurm_compute }}"
+  - "{{ porton_compute }}"
+  - "{{ hpcdirect_compute }}"
 
 # A list of OpenHPC runtime libraries to install on compute and control nodes
 openhpc_packages:

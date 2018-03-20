@@ -1,0 +1,6 @@
+# Ansible Shade uses OpenStack clients running locally
+[openstack]
+localhost ansible_connection=local ansible_python_interpreter=python
+
+[openstack:vars]
+openstack_auth_cloud="hpcdirect"

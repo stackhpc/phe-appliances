@@ -1,0 +1,40 @@
+---
+# This name is used for the Heat stack and as a prefix for the
+# cluster node hostnames.
+cluster_name: openhpc-porton
+
+# Multi-node application topology.  In this case we have a SLURM
+# deployment formed from a login/controller node and a number of
+# batch compute nodes.
+cluster_groups:
+  - "{{ porton_login }}"
+  - "{{ porton_compute }}"
+
+porton_login:
+  name: "login"
+  flavor: "m1.large"
+  image: "CentOS7.4-OpenHPC"
+  user: "centos"
+  num_nodes: 1
+  infra: "openhpc-porton"
+
+porton_compute:
+  name: "compute"
+  flavor: "m1.largeIB"
+  image: "CentOS7.4-OpenHPC"
+  user: "centos"
+  num_nodes: 4
+  infra: "openhpc-porton"
+
+# Node group assignments for cluster roles.
+# These group assignments are appended to the cluster inventory file.
+# The names of these roles are cross-referenced to groups referred to
+# in playbooks in the ansible/ directory.
+cluster_roles:
+  - name: "porton"
+    groups: [ "{{ porton_login }}", "{{ porton_compute }}" ]
+  - name: "login"
+    groups: [ "{{ porton_login }}" ]
+  - name: "batch"
+    groups: [ "{{ porton_compute }}" ]
+
