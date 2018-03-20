@@ -6,14 +6,17 @@
 
   roles:
     - role: stackhpc.cluster-infra
-      cluster_auth: "{{ openstack_auth }}"
-      cluster_auth_type: "{{ openstack_auth_type }}"
+      cluster_auth: "{{ openstack_auth or omit }}"
+      cluster_auth_type: "{{ openstack_auth_type or omit }}"
+      cluster_cloud: "{{ openstack_auth_cloud or omit }}"
       cluster_name: "{{ cluster_name }}"
+      cluster_inventory: "{{ playbook_dir }}/platform/{{ cluster_name }}"
       cluster_params:
         cluster_prefix: "{{ cluster_name }}"
         cluster_keypair: "{{ cluster_keypair }}"
         cluster_groups: "{{ cluster_groups }}"
         cluster_net: "{{ cluster_net }}"
-        security_groups_set_flag: True
+        # Specific to the newton-backports branch
+        security_groups_set_flag: "{{ cluster_net[0].security_groups is defined }}"
       cluster_roles: "{{ cluster_roles }}"
-      cluster_environment_nodenet: "{{ role_path }}/files/environments/nodenet-w-fip.yaml"
+      cluster_nodenet: "{{ role_path }}/files/environments/{{ cluster_nodenet_environment | default('nodenet-1.yaml') }}"
