@@ -1,5 +1,4 @@
 ---
-- src: stackhpc.cluster-infra
 - src: https://github.com/stackhpc/ansible-role-cluster-infra
   version: newton-backport
   name: stackhpc.cluster-infra
