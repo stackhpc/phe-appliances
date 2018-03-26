@@ -1,0 +1,12 @@
+---
+- name: Clean up workspace
+  file:
+    path: "{{ workspace.path }}"
+    state: absent
+
+- name: Restart OpenVPN
+  service:
+    name: "openvpn@{{ inventory_hostname }}"
+    enabled: yes
+    state: restarted
+...

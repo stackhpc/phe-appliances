@@ -1,0 +1,26 @@
+---
+# Lay out IPs for server and clients
+- set_fact:
+    openvpn_server_ip: "{{ openvpn_network | ipaddr('1') }}"
+- set_fact:
+    openvpn_client_ip: "{{ openvpn_client_ip|default({}) | combine( {item.1: openvpn_network | ipaddr(item.0 + 2)} ) }}"
+  with_indexed_items: "{{ openvpn_clients }}"
+
+- name: Ensure OpenVPN package is installed
+  package:
+    name: openvpn
+    state: latest
+  become: True
+
+- name: Create the temporary directory
+  local_action: 
+    module: file
+    path: "{{ openvpn_client_certs_dir }}"
+    state: directory
+  run_once: True
+
+- include_tasks: server.yml
+  when: openvpn_server
+
+- include_tasks: client.yml
+  when: openvpn_client

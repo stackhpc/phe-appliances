@@ -1,0 +1,116 @@
+---
+# Simple shell based CA utility
+- name: Install EasyRSA
+  package:
+    name: easy-rsa-3.0.3
+    update_cache: yes
+    state: latest
+  become: true
+
+- name: Setup Certificates and Config
+  block:
+
+  - name: Create EasyRSA workspace
+    tempfile:
+      prefix: "openvpn-"
+      suffix: "-pki"
+      state: directory
+    register: workspace
+    notify: Clean up workspace
+
+  - name: Initialise PKI
+    command: "{{ openvpn_easyrsa_install_path }}/easyrsa init-pki"
+    args:
+      chdir: "{{ workspace.path }}"
+
+  - name: Build CA
+    command: "{{ openvpn_easyrsa_install_path }}/easyrsa build-ca nopass"
+    args:
+      stdin: "Easy-RSA CA"
+      chdir: "{{ workspace.path }}"
+
+  - name: Build OpenVPN server credentials
+    command: "{{ openvpn_easyrsa_install_path }}/easyrsa build-server-full {{inventory_hostname}} nopass"
+    args:
+      chdir: "{{ workspace.path }}"
+
+  - name: Prepare clients
+    command: "{{ openvpn_easyrsa_install_path }}/easyrsa build-client-full {{item}} nopass"
+    args:
+      chdir: "{{ workspace.path }}"
+    with_items: "{{ openvpn_clients }}"
+
+  - name: Create DH PEM
+    command: "{{ openvpn_easyrsa_install_path }}/easyrsa gen-dh"
+    args:
+      chdir: "{{ workspace.path }}"
+      creates: "{{ workspace.path }}/pki/dh.pem"
+
+  - name: Install CA and DH to OpenVPN config dir
+    copy:
+      remote_src: yes
+      src: "{{ workspace.path }}/pki/{{ item }}"
+      dest: "{{ openvpn_config_dir }}"
+    with_items:
+    - "dh.pem"
+    - "ca.crt"
+    - "issued/{{inventory_hostname}}.crt"
+    - "private/{{inventory_hostname}}.key"
+    become: True
+
+  - name: Install host private keys
+    copy:
+      remote_src: yes
+      src: "{{ workspace.path }}/pki/private/{{inventory_hostname}}.key"
+      dest: "{{ openvpn_config_dir }}"
+      mode: 0600
+    become: True
+
+  - name: Fetch client files
+    fetch:
+      src: "{{ workspace.path }}/pki/{{ item.0.dir }}/{{ item.1 }}.{{ item.0.ext }}"
+      dest: "{{ openvpn_client_certs_dir }}/"
+      flat: yes
+    with_nested:
+    - - dir: issued
+        ext: crt
+      - dir: private
+        ext: key
+    - "{{ openvpn_clients }}"
+
+  rescue:
+  - name: Ensure cleanup is performed on errors
+    meta: flush_handlers
+
+- name: Write server configuration
+  template:
+    src: server.conf.j2
+    dest: "{{ openvpn_config_dir }}/{{ inventory_hostname }}.conf"
+  become: True
+  notify: Restart OpenVPN
+
+- name: Static IP configs for named hosts
+  lineinfile:
+    create: yes
+    path: "{{ openvpn_config_dir }}/ccd/{{ item }}"
+    regexp: "^ifconfig-push"
+    line: "ifconfig-push {{ openvpn_client_ip[item] }} {{ openvpn_server_ip }}"
+  with_items: "{{ openvpn_clients }}"
+  become: True
+  notify: Restart OpenVPN
+
+- name: Generate OpenVPN TA
+  command: "/usr/sbin/openvpn --genkey --secret {{ openvpn_config_dir }}/ta.key"
+  args:
+    creates: "{{ openvpn_config_dir }}/ta.key"
+  become: True
+
+- name: Fetch remaining certificates
+  fetch:
+    src: "{{ item }}"
+    dest: "{{ openvpn_client_certs_dir }}/"
+    flat: yes
+  with_items:
+  - "{{ workspace.path }}/pki/ca.crt"
+  - "{{ openvpn_config_dir }}/ta.key"
+  become: True

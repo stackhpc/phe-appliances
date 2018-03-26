@@ -1,0 +1,12 @@
+---
+openvpn_client: false
+openvpn_clients: []
+openvpn_server: false
+openvpn_config_dir: "/etc/openvpn"
+
+# NB, this directory is local to the Ansible control host
+openvpn_client_certs_dir: "/tmp/openvpn-client-certs"
+
+openvpn_easyrsa_version: "3.0.3"
+openvpn_easyrsa_install_path: "/usr/share/easy-rsa/{{ openvpn_easyrsa_version }}"
+...
