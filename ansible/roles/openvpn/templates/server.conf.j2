@@ -141,6 +141,9 @@ ifconfig-pool-persist ipp.txt
 # back to the OpenVPN server.
 ;push "route 192.168.10.0 255.255.255.0"
 ;push "route 192.168.20.0 255.255.255.0"
+{% for host in openvpn_clients %}
+route {{ hostvars[host]['ansible_default_ipv4'].network }} {{ hostvars[host]['ansible_default_ipv4'].netmask }}
+{% endfor %}
 push "route {{ ansible_default_ipv4.network }} {{ ansible_default_ipv4.netmask }}"
 {% for host in openvpn_clients %}
 push "route {{ hostvars[host]['ansible_default_ipv4'].network }} {{ hostvars[host]['ansible_default_ipv4'].netmask }}"
