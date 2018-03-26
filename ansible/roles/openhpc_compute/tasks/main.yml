@@ -8,6 +8,7 @@
   yum:
     name: "@ohpc-slurm-client"
     state: installed
+  notify: systemd reload
 
 - name: Select the SLURM service to control
   set_fact:
