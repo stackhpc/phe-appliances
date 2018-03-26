@@ -13,6 +13,15 @@
   roles:
     - role: cluster_setup
     - role: resmo.ntp
+    - role: singleplatform-eng.users
+      users:
+        - username: slurm
+          name: SLURM resource manager
+          home: /etc/slurm
+          groups: []
+          uid: 1001
+          ssh_key: []
+          shell: /sbin/nologin
 
 - hosts: cluster
   become: yes 
