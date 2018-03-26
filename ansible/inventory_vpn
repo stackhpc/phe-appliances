@@ -1,0 +1,21 @@
+# Ansible Shade uses OpenStack clients running locally
+all:
+  children:
+    vpn_client:
+      hosts:
+        openhpc-porton-login-0:
+          ansible_host: 172.16.0.20
+      vars:
+        ansible_user: centos
+        ansible_ssh_private_key_file: /phe_home/stig/.ssh/id_rsa
+    vpn_server:
+      hosts:
+        openhpc-hpcdirect-gw-0:
+          ansible_host: 172.27.1.9
+      vars:
+        ansible_user: centos
+        ansible_ssh_private_key_file: /phe_home/stig/.ssh/id_rsa
+    cluster_vpn_hpcdirect:
+      children:
+        vpn_client:
+        vpn_server:

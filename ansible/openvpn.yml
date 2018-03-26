@@ -1,0 +1,9 @@
+---
+- hosts: cluster_vpn_hpcdirect
+
+  roles:
+    - role: openvpn
+      openvpn_server: "{{ inventory_hostname in groups['vpn_server'] }}"
+      openvpn_client: "{{ inventory_hostname in groups['vpn_client'] }}"
+      openvpn_clients: "{{ groups['vpn_client'] }}"
+      openvpn_network: "{{ vpn_hpcdirect_tun_net }}"
