@@ -4,6 +4,12 @@
 # for a SLURM partition
 - hosts: openstack
 
+  pre_tasks:
+    - name: Ensure the platform inventory dir exists
+      file:
+        path: "{{ playbook_dir }}/platform"
+        state: directory
+
   roles:
     - role: stackhpc.cluster-infra
       cluster_auth: "{{ openstack_auth or omit }}"
