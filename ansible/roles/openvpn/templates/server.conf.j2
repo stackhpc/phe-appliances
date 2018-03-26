@@ -98,7 +98,8 @@ dh dh.pem
 # Each client will be able to reach the server
 # on 10.8.0.1. Comment this line out if you are
 # ethernet bridging. See the man page for more info.
-server 10.8.0.0 255.255.255.0
+;server 10.8.0.0 255.255.255.0
+server {{ openvpn_network | ipaddr('network') }} {{ openvpn_network | ipaddr('netmask') }}
 
 # Maintain a record of client <-> virtual IP address
 # associations in this file.  If OpenVPN goes down or
@@ -140,6 +141,10 @@ ifconfig-pool-persist ipp.txt
 # back to the OpenVPN server.
 ;push "route 192.168.10.0 255.255.255.0"
 ;push "route 192.168.20.0 255.255.255.0"
+push "route {{ ansible_default_ipv4.network }} {{ ansible_default_ipv4.netmask }}"
+{% for host in openvpn_clients %}
+push "route {{ hostvars[host]['ansible_default_ipv4'].network }} {{ hostvars[host]['ansible_default_ipv4'].netmask }}"
+{% endfor %}
 
 # To assign specific IP addresses to specific
 # clients or if a connecting client has a private
@@ -198,7 +203,6 @@ client-config-dir ccd
 # The addresses below refer to the public
 # DNS servers provided by opendns.com.
 push "dhcp-option DNS 8.8.8.8"
-push "dhcp-option DNS 8.8.4.4"
 
 # Uncomment this directive to allow different
 # clients to be able to "see" each other.

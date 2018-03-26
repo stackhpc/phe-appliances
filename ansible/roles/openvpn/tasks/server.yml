@@ -89,6 +89,16 @@
   become: True
   notify: Restart OpenVPN
 
+- name: Routes to ignore for named hosts
+  lineinfile:
+    create: yes
+    path: "{{ openvpn_config_dir }}/ccd/{{ item }}"
+    regexp: "^iroute"
+    line: "iroute {{ hostvars[item]['ansible_default_ipv4'].network }} {{ hostvars[item]['ansible_default_ipv4'].netmask }}"
+  with_items: "{{ openvpn_clients }}"
+  become: True
+  notify: Restart OpenVPN
+
 - name: Static IP configs for named hosts
   lineinfile:
     create: yes

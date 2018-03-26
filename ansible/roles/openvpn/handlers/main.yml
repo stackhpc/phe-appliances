@@ -9,4 +9,5 @@
     name: "openvpn@{{ inventory_hostname }}"
     enabled: yes
     state: restarted
+  become: True
 ...
